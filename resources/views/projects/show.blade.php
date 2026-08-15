@@ -49,7 +49,7 @@
             @endif
 
             <div class="mt-10 text-center">
-                <a href="{{ url('/donate') }}" class="inline-flex items-center justify-center rounded-full bg-gold-500 px-8 py-3.5 text-sm font-bold text-purple-950 hover:bg-gold-400 transition-colors">
+                <a href="{{ route('donate.project', $project->slug) }}" class="inline-flex items-center justify-center rounded-full bg-gold-500 px-8 py-3.5 text-sm font-bold text-purple-950 hover:bg-gold-400 transition-colors">
                     Donate to This Project
                 </a>
             </div>

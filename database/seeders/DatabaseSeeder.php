@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
         $founder->assignRole('Super Admin');
 
         $this->call(ContentSeeder::class);
+        $this->call(PaymentSeeder::class);
     }
 }

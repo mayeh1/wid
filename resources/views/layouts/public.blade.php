@@ -125,6 +125,7 @@
                         <h3 class="text-sm font-bold uppercase tracking-wide text-gold-400 mb-4">Get Involved</h3>
                         <ul class="space-y-2 text-sm text-purple-200">
                             <li><a href="{{ url('/donate') }}" class="hover:text-gold-400">Donate</a></li>
+                            <li><a href="{{ route('campaigns.index') }}" class="hover:text-gold-400">Fundraising Campaigns</a></li>
                             <li><a href="{{ url('/volunteer') }}" class="hover:text-gold-400">Become a Volunteer</a></li>
                             <li><a href="{{ url('/membership') }}" class="hover:text-gold-400">Become a Member</a></li>
                             <li><a href="{{ url('/success-stories') }}" class="hover:text-gold-400">Success Stories</a></li>

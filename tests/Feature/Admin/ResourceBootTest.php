@@ -15,7 +15,7 @@ class ResourceBootTest extends TestCase
         'pages', 'team-members', 'programs', 'projects', 'events',
         'blog-categories', 'blog-posts', 'news-posts', 'gallery-albums',
         'testimonials', 'partners', 'faqs', 'downloads', 'hero-slides', 'menus',
-        'contact-messages',
+        'contact-messages', 'payment-methods', 'campaigns', 'donations',
     ];
 
     public function test_admin_dashboard_boots_for_super_admin(): void
