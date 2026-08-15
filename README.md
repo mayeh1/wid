@@ -1,59 +1,209 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Women in Development, Inc. — Website & CMS
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A production-ready website and donor/volunteer management platform for **Women in Development, Inc.**, an
+Indiana 501(c)(3) nonprofit ("Where Women Become Legends") empowering women and girls through employment
+pathways, entrepreneurship, financial literacy, leadership development, mentorship, scholarships, and
+humanitarian support.
 
-## About Laravel
+Built on Laravel 12 with a Filament v3 admin panel, Livewire-driven public pages, and a pluggable payment
+gateway architecture supporting both manual and API-based donation methods.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tech Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Backend**: Laravel 12, PHP 8.2+, MySQL/MariaDB
+- **Frontend**: Blade, Tailwind CSS, Alpine.js, Livewire 3 + Volt
+- **Admin**: Filament v3
+- **Auth**: Laravel Breeze (Livewire stack) + custom two-factor authentication (Google2FA)
+- **Authorization**: Spatie Laravel Permission
+- **Media**: Spatie Media Library
+- **Backups**: Spatie Laravel Backup
+- **PDF**: barryvdh/laravel-dompdf (receipts, certificates, reports)
+- **Exports**: Filament native exports (CSV/XLSX) + maatwebsite/excel
+- **Payments**: Stripe, PayPal, Paystack, Flutterwave (fully wired) — see [Payment Methods](#payment-methods)
+- **Activity logging**: Spatie Laravel Activitylog
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Local Installation
 
-## Learning Laravel
+### Prerequisites
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+- PHP 8.2+ with the `intl`, `mbstring`, `curl`, `gd`, `fileinfo`, and `mysqli` extensions enabled
+- Composer 2.x
+- Node.js 18+ and npm
+- MySQL/MariaDB 10.4+ (or any Laravel-supported database)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Steps
 
-## Laravel Sponsors
+```bash
+git clone <repository-url> wid-website
+cd wid-website
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+composer install
+npm install
 
-### Premium Partners
+cp .env.example .env
+php artisan key:generate
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Edit `.env` and set your database credentials (`DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`), then create the
+database and run migrations with seed data:
 
-## Contributing
+```bash
+php artisan migrate --seed
+php artisan storage:link
+npm run build   # or `npm run dev` for local development with hot reload
+php artisan serve
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The site is now available at `http://localhost:8000`, and the admin panel at `http://localhost:8000/admin`.
 
-## Code of Conduct
+### Default Admin Credentials (development only)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+Email:    admin@womenindevelopmentempire.org
+Password: password
+```
 
-## Security Vulnerabilities
+**Change this password immediately in any non-local environment.** The seeder also creates several demo
+donor/volunteer user accounts (see `database/seeders/DemoActivitySeeder.php`) all sharing the same dev
+password — these are for demoing the UI only and should not exist in production.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Environment Configuration Reference
+
+| Variable | Purpose |
+|---|---|
+| `APP_NAME` | Site name shown in emails, backups, and page titles |
+| `APP_URL` | Base URL used to generate absolute links (set to your local dev URL) |
+| `APP_PRODUCTION_URL` | Reference value for the live domain (womenindevelopmentempire.org) — informational, used when configuring hosting |
+| `DB_*` | MySQL connection — the app is configured for MySQL, not SQLite |
+| `MAIL_*` | Required for donation receipts, contact form notifications, and password resets to actually deliver in production |
+| `QUEUE_CONNECTION` | Defaults to `database`; a queue worker must run in production (see below) — receipts, backups, and other jobs are queued |
+
+**Payment gateway credentials are not set via `.env`.** Each gateway (Stripe, PayPal, Paystack, Flutterwave)
+is configured per `PaymentMethod` record in **Admin → Donations → Payment Methods**, where the API keys are
+stored **encrypted at rest** in the database. This lets an admin add, rotate, or disable payment methods
+without a deploy. See each driver's docblock in `app/Payments/Drivers/` for the exact config keys it expects
+(e.g. Stripe reads `secret_key`; PayPal reads `client_id` + `secret` + `sandbox`).
+
+## Payment Methods
+
+The donation system is built around a `PaymentGatewayDriver` contract (`app/Payments/PaymentGatewayDriver.php`)
+so payment methods split into two kinds:
+
+- **Manual methods** (Bank Transfer, CashApp, Zelle, Mobile Money, Crypto Wallet, or any custom method an
+  admin adds) need **zero code** — an admin creates a `PaymentMethod` record with instructions text and a
+  logo, and it's immediately usable on the donation form.
+- **Gateway methods** (Stripe, PayPal, Paystack, Flutterwave) are backed by a driver class implementing
+  `initiate()` (start checkout, return a redirect URL) and `verify()` (confirm payment completed). All four
+  are fully implemented against their real APIs. Square and Authorize.net ship as structural stubs, since
+  both require client-side card tokenization (Web Payments SDK / Accept.js) beyond a redirect flow — adding
+  a new *gateway* (as opposed to a new *manual* method) does require writing a driver class, one time.
+
+Stripe also has a webhook endpoint at `POST /webhooks/stripe` (CSRF-exempt) for robust server-to-server
+donation confirmation independent of the donor's browser redirect.
+
+## Roles & Permissions
+
+Nine roles are seeded by `database/seeders/RolePermissionSeeder.php`: Super Admin, Admin, Editor, Content
+Manager, Finance Manager, Volunteer Manager, Project Manager, Donor Manager, and Moderator — each scoped to
+permissions across content, donations, payment methods, campaigns, volunteers, projects, donors, moderation,
+users, settings, and SEO. Super Admin bypasses all permission checks via a `Gate::before` hook in
+`AppServiceProvider`.
+
+## Two-Factor Authentication
+
+Users can enable TOTP-based 2FA from **Profile → Two-Factor Authentication** (QR code setup + 8 recovery
+codes). When enabled, password authentication alone does **not** establish a session — the login flow
+redirects to a challenge page requiring the authenticator code or a recovery code before `Auth::login()` is
+called, matching the security posture of Laravel Fortify's implementation.
+
+## Running Tests
+
+```bash
+php artisan test
+```
+
+The suite (52+ tests) covers: every admin resource page booting for an authenticated Super Admin, every
+public page booting with both empty and seeded data, the full donation flow (manual + validation + anonymous
+giving + campaign progress math + receipt access control) via Livewire testing, volunteer/membership
+authenticated flows, and two-factor authentication (enable/confirm/disable/recovery codes/login challenge).
+
+Tests run against an in-memory SQLite database (`phpunit.xml`), isolated from your local MySQL dev database.
+
+## Production Deployment
+
+### Server Requirements
+
+- PHP 8.2+ with the same extensions as local development, plus `opcache` enabled
+- MySQL/MariaDB
+- A process manager for the queue worker (Supervisor, systemd, or your host's equivalent)
+- Cron access for Laravel's scheduler
+
+### Deployment Steps
+
+```bash
+composer install --optimize-autoloader --no-dev
+npm ci && npm run build
+
+php artisan migrate --force
+php artisan storage:link
+
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+php artisan event:cache
+```
+
+Do **not** run `php artisan db:seed` in production — the seeders create demo content and a well-known
+default admin password.
+
+### Queue Worker
+
+Donation receipts, backups, and other background jobs run through the `database` queue. Run a persistent
+worker (Supervisor config example):
+
+```ini
+[program:wid-queue-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /path/to/wid-website/artisan queue:work --sleep=3 --tries=3 --max-time=3600
+autostart=true
+autorestart=true
+numprocs=2
+```
+
+### Scheduler
+
+Add this single cron entry — Laravel's scheduler (configured in `routes/console.php`) handles the rest,
+including the daily sitemap regeneration and the daily backup run/clean/monitor cycle:
+
+```
+* * * * * cd /path/to/wid-website && php artisan schedule:run >> /dev/null 2>&1
+```
+
+### Backups
+
+`spatie/laravel-backup` is configured out of the box (reads `APP_NAME` from `.env`) and scheduled to run
+daily at 01:30, with cleanup at 01:00 and a monitor check at 02:00. Review `config/backup.php` to point the
+backup destination at your production disk (S3, etc.) before going live — the default destination is local
+disk, which is not durable on most hosts.
+
+### HTTPS & Environment
+
+Set `APP_ENV=production`, `APP_DEBUG=false`, and `APP_URL` to `https://womenindevelopmentempire.org` in your
+production `.env`. Configure `SESSION_SECURE_COOKIE=true` once HTTPS is confirmed working end-to-end.
+
+## Architecture Notes
+
+- **Payment Methods** (`app/Payments/`) — see [Payment Methods](#payment-methods) above.
+- **Public layout** (`resources/views/layouts/public.blade.php`) carries brand colors (deep purple `#5B2C83`,
+  gold `#D4AF37`), dark mode (Alpine + localStorage), OpenGraph/Schema.org SEO tags, cookie consent, and the
+  newsletter signup form used across every public page.
+- **Admin panel** (`app/Filament/`) is organized into navigation groups (Content, Programs & Projects,
+  Donations, Volunteers & Members, Blog & News, Media, Engagement, Site Settings) with dashboard widgets for
+  donation stats, a 12-month donations chart, recent donations, and campaign performance.
+- **Activity log** — Donation (status/amount changes), User (role/profile changes), and PaymentMethod
+  (credential/config changes) are audited via `spatie/laravel-activitylog`, viewable read-only in
+  **Admin → Activity Log**.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Proprietary — Women in Development, Inc. All rights reserved.
