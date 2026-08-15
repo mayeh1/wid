@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AboutController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ContactController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SuccessStoryController;
@@ -53,6 +55,10 @@ Route::post('/contact', [ContactController::class, 'store'])
     ->middleware('throttle:6,1')
     ->name('contact.store');
 
+Route::post('/newsletter', [NewsletterController::class, 'store'])
+    ->middleware('throttle:6,1')
+    ->name('newsletter.store');
+
 Route::get('/campaigns', [CampaignController::class, 'index'])->name('campaigns.index');
 Route::get('/campaigns/{slug}', [CampaignController::class, 'show'])->name('campaigns.show');
 
@@ -79,6 +85,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/membership', [MembershipController::class, 'store'])->name('membership.store');
     Route::get('/membership/dashboard', [MembershipController::class, 'dashboard'])->name('membership.dashboard');
     Route::post('/membership/renew', [MembershipController::class, 'renew'])->name('membership.renew');
+
+    Route::get('/admin/reports/summary.pdf', [ReportController::class, 'summaryPdf'])->name('admin.reports.summary-pdf');
 });
 
 Route::view('dashboard', 'dashboard')

@@ -17,6 +17,7 @@ class ResourceBootTest extends TestCase
         'testimonials', 'partners', 'faqs', 'downloads', 'hero-slides', 'menus',
         'contact-messages', 'payment-methods', 'campaigns', 'donations',
         'volunteers', 'membership-levels', 'memberships', 'success-stories',
+        'newsletter-subscribers',
     ];
 
     public function test_admin_dashboard_boots_for_super_admin(): void
@@ -42,6 +43,30 @@ class ResourceBootTest extends TestCase
         $admin = $this->superAdmin();
 
         $this->actingAs($admin)->get('/admin/manage-site-settings')->assertOk();
+    }
+
+    public function test_reports_page_boots(): void
+    {
+        $admin = $this->superAdmin();
+
+        $this->actingAs($admin)->get('/admin/reports')->assertOk();
+    }
+
+    public function test_admin_can_download_pdf_summary_report(): void
+    {
+        $admin = $this->superAdmin();
+
+        $this->actingAs($admin)
+            ->get(route('admin.reports.summary-pdf'))
+            ->assertOk()
+            ->assertHeader('content-type', 'application/pdf');
+    }
+
+    public function test_non_admin_cannot_download_pdf_summary_report(): void
+    {
+        $user = \App\Models\User::factory()->create();
+
+        $this->actingAs($user)->get(route('admin.reports.summary-pdf'))->assertForbidden();
     }
 
     public function test_guest_is_redirected_from_admin(): void

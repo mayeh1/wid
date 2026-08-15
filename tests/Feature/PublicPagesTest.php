@@ -33,4 +33,20 @@ class PublicPagesTest extends TestCase
         $response->assertRedirect();
         $this->assertDatabaseHas('contact_messages', ['email' => 'jane@example.com']);
     }
+
+    public function test_newsletter_signup_creates_a_subscriber(): void
+    {
+        $response = $this->post('/newsletter', ['email' => 'subscriber@example.com']);
+
+        $response->assertRedirect();
+        $this->assertDatabaseHas('newsletter_subscribers', ['email' => 'subscriber@example.com']);
+    }
+
+    public function test_newsletter_signup_is_idempotent_for_duplicate_emails(): void
+    {
+        $this->post('/newsletter', ['email' => 'dup@example.com']);
+        $this->post('/newsletter', ['email' => 'dup@example.com']);
+
+        $this->assertDatabaseCount('newsletter_subscribers', 1);
+    }
 }

@@ -72,6 +72,10 @@ class DonationResource extends Resource
                     'one_time' => 'One-Time', 'monthly' => 'Monthly', 'annual' => 'Annual',
                 ]),
             ])
+            ->headerActions([
+                Tables\Actions\ExportAction::make()
+                    ->exporter(\App\Filament\Exports\DonationExporter::class),
+            ])
             ->actions([
                 Tables\Actions\Action::make('approve')
                     ->visible(fn (Donation $record) => $record->status === 'pending')

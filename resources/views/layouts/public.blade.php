@@ -90,6 +90,28 @@
                 {{ $slot }}
             </main>
 
+            {{-- Newsletter --}}
+            <section class="bg-purple-800">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+                    <h2 class="font-display font-bold text-2xl text-white">Stay in Touch</h2>
+                    <p class="mt-2 text-purple-200 text-sm">Get program updates, event invites, and stories of impact in your inbox.</p>
+
+                    @if (session('status'))
+                        <p class="mt-4 text-sm text-gold-300">{{ session('status') }}</p>
+                    @endif
+
+                    <form method="POST" action="{{ route('newsletter.store') }}" class="mt-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                        @csrf
+                        <input type="email" name="email" required placeholder="Your email address"
+                               class="flex-1 rounded-full border-0 px-5 py-3 text-sm text-gray-900">
+                        <button type="submit" class="rounded-full bg-gold-500 px-6 py-3 text-sm font-bold text-purple-950 hover:bg-gold-400 transition-colors">
+                            Subscribe
+                        </button>
+                    </form>
+                    @error('email')<p class="mt-2 text-xs text-red-300">{{ $message }}</p>@enderror
+                </div>
+            </section>
+
             {{-- Footer --}}
             <footer class="bg-purple-950 text-purple-100">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
