@@ -26,6 +26,11 @@ class ManageSiteSettings extends Page implements HasForms
 
     public ?array $data = [];
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->can('settings.manage') ?? false;
+    }
+
     public function mount(): void
     {
         $this->form->fill(SiteSetting::current()->toArray());

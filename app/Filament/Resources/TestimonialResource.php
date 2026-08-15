@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AuthorizesViaPermissions;
 use App\Filament\Resources\TestimonialResource\Pages;
 use App\Models\Testimonial;
 use Filament\Forms;
@@ -13,6 +14,10 @@ use Filament\Tables\Table;
 
 class TestimonialResource extends Resource
 {
+    use AuthorizesViaPermissions;
+
+    protected static string $permissionGroup = 'content';
+
     protected static ?string $model = Testimonial::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';

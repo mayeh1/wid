@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AuthorizesViaPermissions;
 use App\Filament\Resources\VolunteerResource\Pages;
 use App\Models\Volunteer;
 use Filament\Forms;
@@ -13,6 +14,10 @@ use Filament\Tables\Table;
 
 class VolunteerResource extends Resource
 {
+    use AuthorizesViaPermissions;
+
+    protected static string $permissionGroup = 'volunteers';
+
     protected static ?string $model = Volunteer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-hand-raised';

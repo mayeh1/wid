@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AuthorizesViaPermissions;
 use App\Filament\Resources\PageResource\Pages;
 use App\Models\Page;
 use Filament\Forms;
@@ -14,6 +15,10 @@ use Illuminate\Support\Str;
 
 class PageResource extends Resource
 {
+    use AuthorizesViaPermissions;
+
+    protected static string $permissionGroup = 'content';
+
     protected static ?string $model = Page::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';

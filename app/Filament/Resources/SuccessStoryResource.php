@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AuthorizesViaPermissions;
 use App\Filament\Resources\SuccessStoryResource\Pages;
 use App\Models\SuccessStory;
 use Filament\Forms;
@@ -14,6 +15,10 @@ use Illuminate\Support\Str;
 
 class SuccessStoryResource extends Resource
 {
+    use AuthorizesViaPermissions;
+
+    protected static string $permissionGroup = 'content';
+
     protected static ?string $model = SuccessStory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-star';

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AuthorizesViaPermissions;
 use App\Filament\Resources\DonationResource\Pages;
 use App\Models\Donation;
 use Filament\Forms;
@@ -14,6 +15,10 @@ use Filament\Tables\Table;
 
 class DonationResource extends Resource
 {
+    use AuthorizesViaPermissions;
+
+    protected static string $permissionGroup = 'donations';
+
     protected static ?string $model = Donation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-heart';

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AuthorizesViaPermissions;
 use App\Filament\Resources\ActivityResource\Pages;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\KeyValueEntry;
@@ -14,6 +15,10 @@ use Spatie\Activitylog\Models\Activity;
 
 class ActivityResource extends Resource
 {
+    use AuthorizesViaPermissions;
+
+    protected static string $permissionGroup = 'users';
+
     protected static ?string $model = Activity::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AuthorizesViaPermissions;
 use App\Filament\Resources\MembershipLevelResource\Pages;
 use App\Models\MembershipLevel;
 use Filament\Forms;
@@ -13,6 +14,10 @@ use Illuminate\Support\Str;
 
 class MembershipLevelResource extends Resource
 {
+    use AuthorizesViaPermissions;
+
+    protected static string $permissionGroup = 'members';
+
     protected static ?string $model = MembershipLevel::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-identification';

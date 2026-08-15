@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AuthorizesViaPermissions;
 use App\Filament\Resources\DownloadResource\Pages;
 use App\Models\Download;
 use Filament\Forms;
@@ -13,6 +14,10 @@ use Filament\Tables\Table;
 
 class DownloadResource extends Resource
 {
+    use AuthorizesViaPermissions;
+
+    protected static string $permissionGroup = 'content';
+
     protected static ?string $model = Download::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-arrow-down';

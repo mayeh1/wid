@@ -15,6 +15,11 @@ class Reports extends Page
 
     protected static string $view = 'filament.pages.reports';
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->can('donations.view') ?? false;
+    }
+
     public function getDonationTotals(): array
     {
         return [

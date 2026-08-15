@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AuthorizesViaPermissions;
 use App\Filament\Resources\MembershipResource\Pages;
 use App\Models\Membership;
 use Filament\Forms;
@@ -12,6 +13,10 @@ use Filament\Tables\Table;
 
 class MembershipResource extends Resource
 {
+    use AuthorizesViaPermissions;
+
+    protected static string $permissionGroup = 'members';
+
     protected static ?string $model = Membership::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';

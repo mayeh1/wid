@@ -18,6 +18,7 @@ class RolePermissionSeeder extends Seeder
         'payment_methods' => ['manage'],
         'campaigns' => ['view', 'manage'],
         'volunteers' => ['view', 'approve', 'manage'],
+        'members' => ['view', 'manage'],
         'projects' => ['view', 'manage'],
         'donors' => ['view', 'manage', 'export'],
         'moderation' => ['manage'],
@@ -34,7 +35,7 @@ class RolePermissionSeeder extends Seeder
     private const ROLE_GRANTS = [
         'Super Admin' => ['*'],
         'Admin' => [
-            'content', 'donations', 'payment_methods', 'campaigns', 'volunteers',
+            'content', 'donations', 'payment_methods', 'campaigns', 'volunteers', 'members',
             'projects', 'donors', 'moderation', 'users', 'settings', 'seo',
         ],
         'Editor' => ['content', 'moderation'],
@@ -42,9 +43,9 @@ class RolePermissionSeeder extends Seeder
         'Finance Manager' => [
             'donations', 'payment_methods', 'campaigns.view', 'donors.view', 'donors.export',
         ],
-        'Volunteer Manager' => ['volunteers'],
+        'Volunteer Manager' => ['volunteers', 'members.view'],
         'Project Manager' => ['projects', 'content.view', 'content.update'],
-        'Donor Manager' => ['donors', 'donations.view', 'donations.export'],
+        'Donor Manager' => ['donors', 'donations.view', 'donations.export', 'members'],
         'Moderator' => ['moderation', 'content.view'],
     ];
 

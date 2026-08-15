@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AuthorizesViaPermissions;
 use App\Filament\Resources\TeamMemberResource\Pages;
 use App\Models\TeamMember;
 use Filament\Forms;
@@ -13,6 +14,10 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 
 class TeamMemberResource extends Resource
 {
+    use AuthorizesViaPermissions;
+
+    protected static string $permissionGroup = 'content';
+
     protected static ?string $model = TeamMember::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';

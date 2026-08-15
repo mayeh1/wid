@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\AuthorizesViaPermissions;
 use App\Filament\Resources\GalleryAlbumResource\Pages;
 use App\Models\GalleryAlbum;
 use Filament\Forms;
@@ -14,6 +15,10 @@ use Illuminate\Support\Str;
 
 class GalleryAlbumResource extends Resource
 {
+    use AuthorizesViaPermissions;
+
+    protected static string $permissionGroup = 'content';
+
     protected static ?string $model = GalleryAlbum::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
