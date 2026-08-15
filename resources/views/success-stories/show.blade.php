@@ -1,5 +1,10 @@
 <x-public-layout :title="$story->title" :description="$story->excerpt">
 
+    <x-breadcrumbs :items="[
+        ['label' => 'Success Stories', 'url' => route('success-stories.index')],
+        ['label' => $story->title],
+    ]" />
+
     <section class="relative bg-purple-950 py-20">
         @if ($story->featuredImageUrl())
             <div class="absolute inset-0 opacity-30 bg-cover bg-center" style="background-image: url('{{ $story->featuredImageUrl() }}')"></div>

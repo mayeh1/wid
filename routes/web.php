@@ -14,6 +14,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SuccessStoryController;
@@ -74,6 +75,8 @@ Route::post('/webhooks/stripe', StripeWebhookController::class)->name('webhooks.
 
 Route::get('/success-stories', [SuccessStoryController::class, 'index'])->name('success-stories.index');
 Route::get('/success-stories/{slug}', [SuccessStoryController::class, 'show'])->name('success-stories.show');
+
+Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/volunteer', [VolunteerController::class, 'create'])->name('volunteer.create');

@@ -1,5 +1,10 @@
 <x-public-layout :title="$album->title">
 
+    <x-breadcrumbs :items="[
+        ['label' => 'Gallery', 'url' => route('gallery.index')],
+        ['label' => $album->title],
+    ]" />
+
     <section class="bg-purple-950 py-20">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h1 class="font-display font-bold text-4xl text-white">{{ $album->title }}</h1>

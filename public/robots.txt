@@ -1,2 +1,10 @@
 User-agent: *
-Disallow:
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /profile
+Disallow: /donate/instructions/
+Disallow: /donate/success/
+Disallow: /donate/cancel/
+Disallow: /donations/
+
+Sitemap: /sitemap.xml

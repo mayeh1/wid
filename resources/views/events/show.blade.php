@@ -1,5 +1,10 @@
 <x-public-layout :title="$event->title">
 
+    <x-breadcrumbs :items="[
+        ['label' => 'Events', 'url' => route('events.index')],
+        ['label' => $event->title],
+    ]" />
+
     <section class="relative bg-purple-950 py-20">
         @if ($event->featuredImageUrl())
             <div class="absolute inset-0 opacity-30 bg-cover bg-center" style="background-image: url('{{ $event->featuredImageUrl() }}')"></div>

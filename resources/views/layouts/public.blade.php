@@ -8,9 +8,44 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ $title ?? config('app.name') }} | Women in Development, Inc.</title>
-        <meta name="description" content="{{ $description ?? 'Women in Development, Inc. empowers women and girls through employment pathways, entrepreneurship, financial literacy, leadership development, mentorship, scholarships, and humanitarian support.' }}">
+        @php
+            $pageTitle = ($title ?? config('app.name')).' | Women in Development, Inc.';
+            $pageDescription = $description ?? 'Women in Development, Inc. empowers women and girls through employment pathways, entrepreneurship, financial literacy, leadership development, mentorship, scholarships, and humanitarian support.';
+            $ogImage = $ogImage ?? asset('images/brand/logo-full.png');
+        @endphp
+
+        <title>{{ $pageTitle }}</title>
+        <meta name="description" content="{{ $pageDescription }}">
+        <link rel="canonical" href="{{ url()->current() }}">
         <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+
+        <!-- OpenGraph / Social -->
+        <meta property="og:site_name" content="Women in Development, Inc.">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{{ $pageTitle }}">
+        <meta property="og:description" content="{{ $pageDescription }}">
+        <meta property="og:image" content="{{ $ogImage }}">
+        <meta property="og:url" content="{{ url()->current() }}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $pageTitle }}">
+        <meta name="twitter:description" content="{{ $pageDescription }}">
+        <meta name="twitter:image" content="{{ $ogImage }}">
+
+        <!-- Schema.org -->
+        <script type="application/ld+json">
+        {!! json_encode([
+            '@context' => 'https://schema.org',
+            '@type' => 'NGO',
+            'name' => 'Women in Development, Inc.',
+            'alternateName' => 'WID',
+            'url' => url('/'),
+            'logo' => asset('images/brand/logo-full.png'),
+            'description' => 'Women in Development, Inc. empowers women and girls through employment pathways, entrepreneurship, financial literacy, leadership development, mentorship, scholarships, and humanitarian support.',
+            'slogan' => 'Where Women Become Legends',
+            'email' => 'hello@womenindevelopmentempire.org',
+            'areaServed' => 'Indiana, USA',
+        ], JSON_UNESCAPED_SLASHES) !!}
+        </script>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -169,12 +204,18 @@
                 </div>
 
                 <div class="border-t border-purple-900">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-purple-400">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-purple-400">
                         <p>&copy; {{ now()->year }} Women in Development, Inc. All rights reserved.</p>
+                        <div class="flex items-center gap-4">
+                            <a href="{{ route('pages.show', 'privacy-policy') }}" class="hover:text-gold-400">Privacy Policy</a>
+                            <a href="{{ route('pages.show', 'terms-and-conditions') }}" class="hover:text-gold-400">Terms &amp; Conditions</a>
+                        </div>
                         <p>Empowering Women. Transforming Lives. Building Legacies.</p>
                     </div>
                 </div>
             </footer>
         </div>
+
+        <x-cookie-consent />
     </body>
 </html>

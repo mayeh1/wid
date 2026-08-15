@@ -2,9 +2,11 @@
 
 namespace App\Livewire\Forms;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
@@ -22,15 +24,19 @@ class LoginForm extends Form
     public bool $remember = false;
 
     /**
-     * Attempt to authenticate the request's credentials.
+     * Validate credentials. Returns true if the user still needs to pass a
+     * two-factor challenge before a session is established, false if login
+     * is already complete.
      *
      * @throws ValidationException
      */
-    public function authenticate(): void
+    public function authenticate(): bool
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only(['email', 'password']), $this->remember)) {
+        $user = User::where('email', $this->email)->first();
+
+        if (! $user || ! \Illuminate\Support\Facades\Hash::check($this->password, $user->password)) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
@@ -39,6 +45,17 @@ class LoginForm extends Form
         }
 
         RateLimiter::clear($this->throttleKey());
+
+        if ($user->hasEnabledTwoFactorAuthentication()) {
+            Session::put('login.two_factor.id', $user->id);
+            Session::put('login.two_factor.remember', $this->remember);
+
+            return true;
+        }
+
+        Auth::login($user, $this->remember);
+
+        return false;
     }
 
     /**

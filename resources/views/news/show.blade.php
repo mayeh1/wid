@@ -1,5 +1,10 @@
 <x-public-layout :title="$post->title" :description="$post->excerpt">
 
+    <x-breadcrumbs :items="[
+        ['label' => 'News', 'url' => route('news.index')],
+        ['label' => $post->title],
+    ]" />
+
     <section class="bg-purple-950 py-20">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <span class="inline-block text-xs font-bold uppercase tracking-wide text-gold-400">{{ str_replace('_', ' ', $post->type) }}</span>

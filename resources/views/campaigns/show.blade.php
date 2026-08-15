@@ -1,5 +1,10 @@
 <x-public-layout :title="$campaign->title">
 
+    <x-breadcrumbs :items="[
+        ['label' => 'Campaigns', 'url' => route('campaigns.index')],
+        ['label' => $campaign->title],
+    ]" />
+
     <section class="relative bg-purple-950 py-20">
         @if ($campaign->featuredImageUrl())
             <div class="absolute inset-0 opacity-30 bg-cover bg-center" style="background-image: url('{{ $campaign->featuredImageUrl() }}')"></div>

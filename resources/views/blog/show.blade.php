@@ -1,5 +1,10 @@
 <x-public-layout :title="$post->title" :description="$post->excerpt">
 
+    <x-breadcrumbs :items="[
+        ['label' => 'Blog', 'url' => route('blog.index')],
+        ['label' => $post->title],
+    ]" />
+
     <section class="relative bg-purple-950 py-20">
         @if ($post->featuredImageUrl())
             <div class="absolute inset-0 opacity-30 bg-cover bg-center" style="background-image: url('{{ $post->featuredImageUrl() }}')"></div>
