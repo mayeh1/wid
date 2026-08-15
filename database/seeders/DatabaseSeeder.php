@@ -15,11 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->call(RolePermissionSeeder::class);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Dev-only credentials (password: "password"). Change before any
+        // non-local deployment.
+        $founder = User::factory()->create([
+            'name' => 'Carmella Maduekwe',
+            'email' => 'admin@womenindevelopmentempire.org',
         ]);
+        $founder->assignRole('Super Admin');
     }
 }
