@@ -10,9 +10,12 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\SuccessStoryController;
+use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\Webhooks\StripeWebhookController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,15 +66,20 @@ Route::get('/donations/{receiptNumber}/receipt', [DonationController::class, 're
 
 Route::post('/webhooks/stripe', StripeWebhookController::class)->name('webhooks.stripe');
 
-$comingSoonPages = [
-    'volunteer' => 'Become a Volunteer',
-    'membership' => 'Membership',
-    'success-stories' => 'Success Stories',
-];
+Route::get('/success-stories', [SuccessStoryController::class, 'index'])->name('success-stories.index');
+Route::get('/success-stories/{slug}', [SuccessStoryController::class, 'show'])->name('success-stories.show');
 
-foreach ($comingSoonPages as $slug => $pageTitle) {
-    Route::view("/{$slug}", 'coming-soon', ['pageTitle' => $pageTitle])->name($slug);
-}
+Route::middleware('auth')->group(function () {
+    Route::get('/volunteer', [VolunteerController::class, 'create'])->name('volunteer.create');
+    Route::post('/volunteer', [VolunteerController::class, 'store'])->name('volunteer.store');
+    Route::get('/volunteer/dashboard', [VolunteerController::class, 'dashboard'])->name('volunteer.dashboard');
+    Route::get('/volunteer/certificate', [VolunteerController::class, 'certificate'])->name('volunteer.certificate');
+
+    Route::get('/membership', [MembershipController::class, 'create'])->name('membership.create');
+    Route::post('/membership', [MembershipController::class, 'store'])->name('membership.store');
+    Route::get('/membership/dashboard', [MembershipController::class, 'dashboard'])->name('membership.dashboard');
+    Route::post('/membership/renew', [MembershipController::class, 'renew'])->name('membership.renew');
+});
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

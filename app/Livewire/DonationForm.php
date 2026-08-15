@@ -38,6 +38,11 @@ class DonationForm extends Component
         $this->campaign = $campaign;
         $this->project = $project;
         $this->paymentMethodId = PaymentMethod::enabled()->orderBy('order')->value('id');
+
+        if ($user = auth()->user()) {
+            $this->donorName = $user->name;
+            $this->donorEmail = $user->email;
+        }
     }
 
     public function selectAmount(string $amount): void
@@ -86,6 +91,7 @@ class DonationForm extends Component
             'payment_method_id' => $method->id,
             'campaign_id' => $this->campaign?->id,
             'project_id' => $this->project?->id,
+            'user_id' => auth()->id(),
             'donor_name' => $this->isAnonymous ? 'Anonymous' : $this->donorName,
             'donor_email' => $this->donorEmail,
             'is_anonymous' => $this->isAnonymous,

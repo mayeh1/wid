@@ -12,7 +12,7 @@ class PublicPagesTest extends TestCase
     private const INDEX_ROUTES = [
         '/', '/about', '/programs', '/projects', '/events', '/blog',
         '/news', '/gallery', '/faqs', '/resources', '/contact',
-        '/campaigns', '/donate',
+        '/campaigns', '/donate', '/success-stories',
     ];
 
     public function test_every_public_index_page_boots_with_no_data(): void

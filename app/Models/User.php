@@ -64,4 +64,24 @@ class User extends Authenticatable implements FilamentUser
             'Moderator',
         ]);
     }
+
+    public function volunteer()
+    {
+        return $this->hasOne(Volunteer::class);
+    }
+
+    public function memberships()
+    {
+        return $this->hasMany(Membership::class);
+    }
+
+    public function membership()
+    {
+        return $this->hasOne(Membership::class)->latestOfMany();
+    }
+
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
 }
