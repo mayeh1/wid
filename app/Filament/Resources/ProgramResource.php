@@ -20,18 +20,6 @@ class ProgramResource extends Resource
 
     protected static ?string $navigationGroup = 'Programs & Projects';
 
-    public const CATEGORIES = [
-        'employment' => 'Employment Programs',
-        'entrepreneurship' => 'Entrepreneurship',
-        'financial_literacy' => 'Financial Literacy',
-        'leadership_development' => 'Leadership Development',
-        'mentorship' => 'Mentorship',
-        'scholarships' => 'Scholarships',
-        'community_development' => 'Community Development',
-        'emergency_assistance' => 'Emergency Assistance',
-        'womens_empowerment' => "Women's Empowerment",
-    ];
-
     public static function form(Form $form): Form
     {
         return $form
@@ -45,7 +33,7 @@ class ProgramResource extends Resource
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn (string $state, Forms\Set $set, ?string $slug) => $slug === null && $set('slug', Str::slug($state))),
                         Forms\Components\TextInput::make('slug')->required()->unique(ignoreRecord: true)->maxLength(255),
-                        Forms\Components\Select::make('category')->options(self::CATEGORIES)->required(),
+                        Forms\Components\Select::make('category')->options(Program::CATEGORIES)->required(),
                         Forms\Components\TextInput::make('icon')->maxLength(255)->helperText('Heroicon name, e.g. briefcase'),
                         Forms\Components\Textarea::make('excerpt')->columnSpanFull()->rows(2),
                         Forms\Components\RichEditor::make('description')->columnSpanFull(),
@@ -70,12 +58,12 @@ class ProgramResource extends Resource
             ->columns([
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('featured_image')->collection('featured_image'),
                 Tables\Columns\TextColumn::make('title')->searchable(),
-                Tables\Columns\TextColumn::make('category')->badge()->formatStateUsing(fn (string $state) => self::CATEGORIES[$state] ?? $state),
+                Tables\Columns\TextColumn::make('category')->badge()->formatStateUsing(fn (string $state) => Program::CATEGORIES[$state] ?? $state),
                 Tables\Columns\IconColumn::make('is_featured')->boolean(),
                 Tables\Columns\IconColumn::make('is_published')->boolean(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('category')->options(self::CATEGORIES),
+                Tables\Filters\SelectFilter::make('category')->options(Program::CATEGORIES),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -12,6 +12,18 @@ class Program extends Model implements HasMedia
     /** @use HasFactory<\Database\Factories\ProgramFactory> */
     use HasFactory, InteractsWithMedia;
 
+    public const CATEGORIES = [
+        'employment' => 'Employment Programs',
+        'entrepreneurship' => 'Entrepreneurship',
+        'financial_literacy' => 'Financial Literacy',
+        'leadership_development' => 'Leadership Development',
+        'mentorship' => 'Mentorship',
+        'scholarships' => 'Scholarships',
+        'community_development' => 'Community Development',
+        'emergency_assistance' => 'Emergency Assistance',
+        'womens_empowerment' => "Women's Empowerment",
+    ];
+
     protected $fillable = [
         'title', 'slug', 'category', 'icon', 'excerpt', 'description', 'success_stories',
         'apply_url', 'is_featured', 'is_published', 'order',

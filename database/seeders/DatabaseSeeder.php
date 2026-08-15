@@ -24,5 +24,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@womenindevelopmentempire.org',
         ]);
         $founder->assignRole('Super Admin');
+
+        $this->call(ContentSeeder::class);
     }
 }

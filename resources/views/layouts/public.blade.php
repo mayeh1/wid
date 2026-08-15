@@ -114,6 +114,9 @@
                             <li><a href="{{ url('/projects') }}" class="hover:text-gold-400">Projects</a></li>
                             <li><a href="{{ url('/events') }}" class="hover:text-gold-400">Events</a></li>
                             <li><a href="{{ url('/blog') }}" class="hover:text-gold-400">Blog</a></li>
+                            <li><a href="{{ url('/news') }}" class="hover:text-gold-400">News</a></li>
+                            <li><a href="{{ url('/gallery') }}" class="hover:text-gold-400">Gallery</a></li>
+                            <li><a href="{{ url('/faqs') }}" class="hover:text-gold-400">FAQs</a></li>
                             <li><a href="{{ url('/resources') }}" class="hover:text-gold-400">Resources &amp; Reports</a></li>
                         </ul>
                     </div>

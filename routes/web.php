@@ -1,20 +1,56 @@
 <?php
 
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\FaqController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'home')->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('/faqs', [FaqController::class, 'index'])->name('faqs');
+Route::get('/resources', [DownloadController::class, 'index'])->name('resources');
+
+Route::get('/programs', [ProgramController::class, 'index'])->name('programs.index');
+Route::get('/programs/{slug}', [ProgramController::class, 'show'])->name('programs.show');
+
+Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+Route::get('/projects/{slug}', [ProjectController::class, 'show'])->name('projects.show');
+
+Route::get('/events', [EventController::class, 'index'])->name('events.index');
+Route::get('/events/{slug}', [EventController::class, 'show'])->name('events.show');
+Route::post('/events/{slug}/register', [EventController::class, 'register'])
+    ->middleware('throttle:6,1')
+    ->name('events.register');
+
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::post('/blog/{slug}/comment', [BlogController::class, 'comment'])
+    ->middleware('throttle:6,1')
+    ->name('blog.comment');
+
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
+
+Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery.index');
+Route::get('/gallery/{slug}', [GalleryController::class, 'show'])->name('gallery.show');
+
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'store'])
+    ->middleware('throttle:6,1')
+    ->name('contact.store');
 
 $comingSoonPages = [
-    'about' => 'About Us',
-    'programs' => 'Programs',
-    'projects' => 'Projects',
-    'events' => 'Events',
-    'blog' => 'Blog',
-    'contact' => 'Contact',
     'donate' => 'Donate',
     'volunteer' => 'Become a Volunteer',
     'membership' => 'Membership',
-    'resources' => 'Resources & Reports',
     'success-stories' => 'Success Stories',
 ];
 
