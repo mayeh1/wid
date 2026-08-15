@@ -10,6 +10,7 @@
 
         <title>{{ $title ?? config('app.name') }} | Women in Development, Inc.</title>
         <meta name="description" content="{{ $description ?? 'Women in Development, Inc. empowers women and girls through employment pathways, entrepreneurship, financial literacy, leadership development, mentorship, scholarships, and humanitarian support.' }}">
+        <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -29,7 +30,7 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex items-center justify-between h-20">
                         <a href="{{ url('/') }}" wire:navigate class="flex items-center gap-3 shrink-0">
-                            <x-application-logo class="h-11 w-11" />
+                            <x-application-logo class="h-12 w-auto" />
                             <span class="hidden sm:flex flex-col leading-tight">
                                 <span class="font-display font-bold text-lg text-purple-700 dark:text-gold-400">Women in Development</span>
                                 <span class="text-xs tracking-wide uppercase text-gold-600 dark:text-gold-500">Where Women Become Legends</span>
@@ -94,7 +95,7 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
                     <div>
                         <div class="flex items-center gap-3 mb-4">
-                            <x-application-logo class="h-10 w-10" />
+                            <x-application-logo class="h-10 w-auto" />
                             <span class="font-display font-bold text-white">Women in Development</span>
                         </div>
                         <p class="text-sm text-purple-300 leading-relaxed">

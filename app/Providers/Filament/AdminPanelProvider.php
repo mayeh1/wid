@@ -28,7 +28,9 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('Women in Development')
-            ->favicon(asset('favicon.ico'))
+            ->favicon(asset('favicon.png'))
+            ->brandLogo(asset('images/brand/logo-icon.png'))
+            ->brandLogoHeight('2.5rem')
             ->colors([
                 'primary' => Color::hex('#5B2C83'),
                 'warning' => Color::hex('#D4AF37'),
