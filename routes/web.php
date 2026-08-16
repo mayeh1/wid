@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DeployOnceController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\EventController;
@@ -99,5 +100,7 @@ Route::view('dashboard', 'dashboard')
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
+
+Route::get('/deploy-once/{secret}', DeployOnceController::class)->name('deploy.once');
 
 require __DIR__.'/auth.php';

@@ -1,15 +1,15 @@
 # Deploying to Namecheap Shared Hosting (cPanel)
 
 This is the Namecheap-specific counterpart to the general deployment guide in the main `README.md`.
-Shared hosting has two constraints that change the approach from a VPS:
+Shared hosting has a few constraints that change the approach from a VPS:
 
 1. **No persistent background process** — you can't run `php artisan queue:work` as a long-lived daemon
    (no Supervisor/systemd on shared plans). We use a cron-based worker instead.
 2. **No Node.js build tooling on most shared plans** — frontend assets (`public/build/`) are built
    **locally**, then uploaded to the server rather than built in place.
 
-You said you have SSH/Terminal access (Stellar Plus or Business plan), so this guide uses that. Everything
-here runs from **your own terminal session** — nothing here requires giving anyone your cPanel password.
+This guide uses **cPanel's Git™ Version Control feature + its browser-based Terminal app** — everything
+runs through your existing cPanel login session in the browser. No SSH keys, no separate terminal client.
 
 ## 1. One-time server setup (cPanel UI)
 
@@ -17,43 +17,45 @@ here runs from **your own terminal session** — nothing here requires giving an
 2. **PHP extensions** — cPanel → *Select PHP Version* → *Extensions* tab → ensure `intl`, `mbstring`,
    `curl`, `gd`, `fileinfo`, `mysqli`, `pdo_mysql`, `openssl`, `zip`, `bcmath` are all checked.
 3. **MySQL database** — cPanel → *MySQL® Databases* → create a database (e.g. `yourcpaneluser_wid`), a
-   database user with a strong password, and add that user to the database with **All Privileges**.
-4. **Domain document root** — confirm which directory `womenindevelopmentempire.org` points to (cPanel →
-   *Domains*). Laravel's public entry point (`public/index.php`) must be the thing the web server serves
-   from that document root — see step 5 below for the two common ways to arrange that.
+   database user with a strong password, and add that user to the database with **All Privileges**. Write
+   the database name, username, and password down — you'll need them in step 4.
 
-## 2. Clone the repo over SSH
+## 2. Clone the repo via cPanel's Git Version Control
 
-```bash
-ssh yourcpaneluser@your-server-hostname   # from Namecheap's welcome email or cPanel → SSH Access
-cd ~
-git clone https://github.com/<your-org>/wid-website.git wid-app
-cd wid-app
+1. cPanel → *Git™ Version Control* → **Create**.
+2. **Clone URL**: `https://github.com/mayeh1/wid.git`
+3. **Repository Path**: something *outside* `public_html`, e.g. `/home/yourcpaneluser/wid-app` — this
+   matters because Laravel's actual web entry point is the `public/` subfolder, not the project root (see
+   step 3).
+4. **Repository Name**: whatever you like (e.g. `wid`).
+5. Click **Create**. cPanel clones the repo for you — no SSH needed for a public repo like this one.
+
+To pull future updates later, come back to this same *Git™ Version Control* page, open the repository, and
+click **Pull or Deploy → Update from Remote**, then **Deploy HEAD Commit**.
+
+## 3. Point the domain at `public/`
+
+Shared hosting usually serves straight from `public_html/`, but Laravel's entry point is `public/`. In
+cPanel → *Domains*, edit `womenindevelopmentempire.org`'s **Document Root** to point directly at:
+
+```
+/home/yourcpaneluser/wid-app/public
 ```
 
-## 3. Point the document root at `public/`
+(matching whatever repository path you chose in step 2). This is the cleanest fix — if your plan doesn't
+let you change the document root for the main domain, use a symlink instead: in cPanel's *File Manager*,
+inside `public_html`, create a symlink named after nothing extra — i.e. delete the placeholder
+`public_html` contents and symlink `public_html` itself to `wid-app/public` (File Manager doesn't do
+symlinks directly; the Terminal app from step 4 can: `ln -s ~/wid-app/public ~/public_html`, after first
+emptying `public_html`).
 
-Shared hosting usually serves straight from `public_html/`, but Laravel's entry point is `public/`. Two
-options, in order of preference:
+## 4. Open cPanel's Terminal and configure the app
 
-**Option A — subdomain/addon domain document root (cleanest):** In cPanel → *Domains*, edit
-`womenindevelopmentempire.org`'s document root to point directly at `~/wid-app/public`. This is the
-correct long-term setup if your plan allows changing it.
-
-**Option B — symlink trick (if the document root can't be changed):**
-```bash
-# Move everything except public/ above the web root, then symlink public/ into public_html
-mv ~/wid-app ~/wid-app-source
-mv ~/wid-app-source/public ~/public_html_new
-ln -s ~/wid-app-source ~/public_html_new/app
-```
-Then edit `~/public_html_new/index.php` so its `require` paths point at `__DIR__.'/app/...'` instead of
-`__DIR__.'/../...'`. This is fiddly — Option A is strongly preferred if at all possible.
-
-## 4. Install dependencies and configure
+cPanel → *Advanced* → **Terminal**. This opens a browser-based shell authenticated by your cPanel login —
+no key setup required. Run:
 
 ```bash
-cd ~/wid-app   # (or wherever step 3 left your app root)
+cd ~/wid-app
 
 composer install --optimize-autoloader --no-dev
 
@@ -61,7 +63,8 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Edit `.env` (via `nano .env` or cPanel's File Manager) and set:
+Edit `.env` next — either `nano .env` right there in the Terminal, or cPanel's *File Manager* → navigate to
+`wid-app` → enable "Show Hidden Files" → edit `.env` in the built-in code editor. Set:
 
 ```env
 APP_ENV=production
@@ -87,7 +90,8 @@ MAIL_FROM_NAME="Women in Development"
 QUEUE_CONNECTION=database
 ```
 
-Then run migrations (no `--seed` in production — that creates demo content and a well-known password):
+Back in the Terminal, run migrations (no `--seed` in production — that creates demo content and a
+well-known dev password):
 
 ```bash
 php artisan migrate --force
@@ -99,34 +103,33 @@ php artisan view:cache
 php artisan event:cache
 ```
 
-Create your real admin account instead of using the seeded dev one:
+Create your real admin account instead of using the seeded dev one — first seed just the roles (no demo
+content), then create yourself as Super Admin:
 
 ```bash
+php artisan db:seed --class=RolePermissionSeeder --force
+
 php artisan tinker
 >>> $u = App\Models\User::create(['name' => 'Your Name', 'email' => 'you@womenindevelopmentempire.org', 'password' => bcrypt('a-strong-password')]);
 >>> $u->assignRole('Super Admin');
 >>> exit
 ```
 
-(This requires roles to exist first — run `php artisan db:seed --class=RolePermissionSeeder --force` once,
-which only creates roles/permissions, no demo content or dev accounts.)
-
 ## 5. Upload the built frontend assets
 
-Node isn't available on the server, so build locally and upload:
+Node isn't available on the server, so build locally and upload via File Manager:
 
 ```bash
 # On your local machine, from the project root:
 npm run build
-
-# Then upload public/build/ to the server. From your local machine:
-scp -r public/build yourcpaneluser@your-server-hostname:~/wid-app/public/build
 ```
 
-Repeat this `npm run build` + `scp` step after every future change that touches CSS/JS. If your Namecheap
-plan happens to include cPanel's *Setup Node.js App* feature, you can instead run `npm install && npm run
-build` directly over SSH inside that Node environment — check cPanel for a "Node.js" icon to know if you
-have it.
+Then in cPanel → *File Manager*, navigate to `wid-app/public`, and upload the resulting `build/` folder
+(zip it locally first — `Compress-Archive public\build build.zip` on Windows PowerShell — then use File
+Manager's **Upload**, followed by **Extract** once it's on the server; this is much faster than uploading
+hundreds of individual files one by one).
+
+Repeat this after every future change that touches CSS/JS.
 
 ## 6. Queue worker via cron (instead of a daemon)
 
@@ -167,17 +170,19 @@ or at minimum periodically download the `storage/app/backups` directory somewher
 
 ## Redeploying after future changes
 
-```bash
-# Local: build assets
-npm run build
+1. **Local**: `npm run build`, then zip and upload `public/build/` via File Manager as in step 5.
+2. **cPanel → Git™ Version Control**: open the repo → **Pull or Deploy** → **Update from Remote** →
+   **Deploy HEAD Commit**.
+3. **cPanel → Terminal**:
+   ```bash
+   cd ~/wid-app
+   composer install --optimize-autoloader --no-dev
+   php artisan migrate --force
+   php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache
+   ```
 
-# Server (SSH):
-cd ~/wid-app
-git pull
-composer install --optimize-autoloader --no-dev
-php artisan migrate --force
-php artisan optimize:clear && php artisan config:cache && php artisan route:cache && php artisan view:cache
+## If you get SSH access working later
 
-# Local: re-upload built assets
-scp -r public/build yourcpaneluser@your-server-hostname:~/wid-app/public/build
-```
+Everything above also works over SSH if you ever want it — `git clone`/`git pull` instead of the cPanel Git
+UI, and `scp` instead of File Manager uploads for `public/build/`. Nothing here is SSH-specific by
+necessity; the browser-based path is just the lower-friction default.
