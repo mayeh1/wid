@@ -131,6 +131,10 @@ Tests run against an in-memory SQLite database (`phpunit.xml`), isolated from yo
 
 ## Production Deployment
 
+This section covers a VPS-style deployment (root SSH, a process manager, Node available). Deploying to
+**Namecheap shared hosting (cPanel)** specifically — no persistent worker process, no Node on the server —
+has its own guide: [`docs/DEPLOY-NAMECHEAP.md`](docs/DEPLOY-NAMECHEAP.md).
+
 ### Server Requirements
 
 - PHP 8.2+ with the same extensions as local development, plus `opcache` enabled
