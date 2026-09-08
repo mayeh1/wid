@@ -81,6 +81,7 @@
                             <a href="{{ url('/projects') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Projects</a>
                             <a href="{{ url('/events') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Events</a>
                             <a href="{{ url('/blog') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Blog</a>
+                            <a href="{{ url('/gallery') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Gallery</a>
                             <a href="{{ url('/contact') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Contact</a>
                         </nav>
 
@@ -117,6 +118,7 @@
                         <a href="{{ url('/projects') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Projects</a>
                         <a href="{{ url('/events') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Events</a>
                         <a href="{{ url('/blog') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Blog</a>
+                        <a href="{{ url('/gallery') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Gallery</a>
                         <a href="{{ url('/contact') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Contact</a>
                         <a href="{{ url('/donate') }}" class="mt-2 inline-flex justify-center items-center rounded-full bg-gold-500 px-5 py-2.5 text-sm font-bold text-purple-950">Donate Now</a>
                     </nav>

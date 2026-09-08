@@ -9,9 +9,9 @@
         >
             <button type="button" @click="open = !open" class="w-full flex items-center gap-4 p-5 text-left">
                 @if ($member->photoUrl())
-                    <img src="{{ $member->photoUrl() }}" alt="{{ $member->name }}" class="w-16 h-16 rounded-full object-cover flex-shrink-0">
+                    <img src="{{ $member->photoUrl() }}" alt="{{ $member->name }}" class="w-24 h-24 rounded-full object-cover flex-shrink-0">
                 @else
-                    <div class="w-16 h-16 rounded-full bg-purple-100 dark:bg-purple-800 flex items-center justify-center flex-shrink-0 text-purple-700 dark:text-gold-400 font-display font-bold text-xl">
+                    <div class="w-24 h-24 rounded-full bg-purple-100 dark:bg-purple-800 flex items-center justify-center flex-shrink-0 text-purple-700 dark:text-gold-400 font-display font-bold text-2xl">
                         {{ mb_substr($member->name, 0, 1) }}
                     </div>
                 @endif
