@@ -14,13 +14,18 @@
         </div>
     </section>
 
-    @php $photos = $album->getMedia('photos'); @endphp
+    @php $photos = $album->photos; @endphp
 
-    <section class="bg-white dark:bg-purple-950 py-16" x-data="{ open: false, active: null }">
+    <section class="bg-white dark:bg-purple-950 py-16" x-data="{ open: false, active: null, caption: null }">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             @forelse ($photos as $photo)
-                <button type="button" @click="open = true; active = '{{ $photo->getUrl() }}'" class="rounded-xl overflow-hidden aspect-square">
-                    <img src="{{ $photo->getUrl() }}" alt="{{ $album->title }}" class="w-full h-full object-cover hover:scale-105 transition-transform">
+                <button type="button"
+                        @click="open = true; active = '{{ $photo->photoUrl() }}'; caption = {{ Js::from($photo->caption) }}"
+                        class="rounded-xl overflow-hidden aspect-square relative group">
+                    <img src="{{ $photo->photoUrl() }}" alt="{{ $photo->caption ?: $album->title }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
+                    @if ($photo->caption)
+                        <span class="absolute inset-x-0 bottom-0 bg-black/60 text-white text-xs px-2 py-1.5 text-left truncate">{{ $photo->caption }}</span>
+                    @endif
                 </button>
             @empty
                 <p class="col-span-full text-center text-gray-500 dark:text-purple-300">No photos in this album yet.</p>
@@ -29,8 +34,9 @@
 
         {{-- Lightbox --}}
         <div x-show="open" x-cloak x-transition.opacity @keydown.escape.window="open = false"
-             class="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-6" @click="open = false">
-            <img :src="active" class="max-h-[85vh] max-w-full rounded-lg" @click.stop>
+             class="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-6" @click="open = false">
+            <img :src="active" class="max-h-[80vh] max-w-full rounded-lg" @click.stop>
+            <p x-show="caption" x-text="caption" class="mt-4 text-white text-sm max-w-xl text-center" @click.stop></p>
             <button @click="open = false" class="absolute top-6 right-6 text-white text-3xl leading-none">&times;</button>
         </div>
     </section>

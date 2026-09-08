@@ -36,7 +36,7 @@ class ProgramResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (string $state, Forms\Set $set, ?string $slug) => $slug === null && $set('slug', Str::slug($state))),
+                            ->afterStateUpdated(fn (string $state, Forms\Set $set, Forms\Get $get) => $get('slug') === null && $set('slug', Str::slug($state))),
                         Forms\Components\TextInput::make('slug')->required()->unique(ignoreRecord: true)->maxLength(255),
                         Forms\Components\Select::make('category')->options(Program::CATEGORIES)->required(),
                         Forms\Components\TextInput::make('icon')->maxLength(255)->helperText('Heroicon name, e.g. briefcase'),

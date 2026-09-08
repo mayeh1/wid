@@ -15,7 +15,6 @@ class AboutController extends Controller
             'page' => Page::where('slug', 'about')->where('is_published', true)->first(),
             'founder' => TeamMember::active()->ofCategory('founder')->orderBy('order')->first(),
             'boardMembers' => TeamMember::active()->ofCategory('board_member')->orderBy('order')->get(),
-            'staff' => TeamMember::active()->ofCategory('staff')->orderBy('order')->get(),
         ]);
     }
 }

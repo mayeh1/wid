@@ -47,10 +47,20 @@ class TeamMemberResource extends Resource
                             ])
                             ->required(),
                         Forms\Components\TextInput::make('email')->email()->maxLength(255),
-                        Forms\Components\TextInput::make('linkedin_url')->url()->maxLength(255),
                         Forms\Components\Textarea::make('bio')->columnSpanFull()->rows(4),
                         Forms\Components\TextInput::make('order')->numeric()->default(0),
                         Forms\Components\Toggle::make('is_active')->default(true),
+                    ]),
+                Forms\Components\Section::make('Portfolio & Social Links')
+                    ->description('Optional. Shown on the public site as clickable links on this member\'s bio.')
+                    ->columns(2)
+                    ->schema([
+                        Forms\Components\TextInput::make('website_url')->label('Website')->url()->maxLength(255),
+                        Forms\Components\TextInput::make('portfolio_url')->label('Portfolio')->url()->maxLength(255),
+                        Forms\Components\TextInput::make('linkedin_url')->label('LinkedIn')->url()->maxLength(255),
+                        Forms\Components\TextInput::make('twitter_url')->label('Twitter / X')->url()->maxLength(255),
+                        Forms\Components\TextInput::make('facebook_url')->label('Facebook')->url()->maxLength(255),
+                        Forms\Components\TextInput::make('instagram_url')->label('Instagram')->url()->maxLength(255),
                     ]),
             ]);
     }

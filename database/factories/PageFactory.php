@@ -17,8 +17,14 @@ class PageFactory extends Factory
      */
     public function definition(): array
     {
+        $title = $this->faker->unique()->sentence(3);
+
         return [
-            //
+            'title' => $title,
+            'slug' => \Illuminate\Support\Str::slug($title).'-'.$this->faker->unique()->numberBetween(1000, 9999),
+            'excerpt' => $this->faker->sentence(),
+            'content' => '<p>'.$this->faker->paragraph().'</p>',
+            'is_published' => true,
         ];
     }
 }

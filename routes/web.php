@@ -18,12 +18,14 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SuccessStoryController;
+use App\Http\Controllers\TeamController;
 use App\Http\Controllers\VolunteerController;
 use App\Http\Controllers\Webhooks\StripeWebhookController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
+Route::get('/team', [TeamController::class, 'index'])->name('team');
 Route::get('/faqs', [FaqController::class, 'index'])->name('faqs');
 Route::get('/resources', [DownloadController::class, 'index'])->name('resources');
 

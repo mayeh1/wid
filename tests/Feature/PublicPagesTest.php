@@ -10,7 +10,7 @@ class PublicPagesTest extends TestCase
     use RefreshDatabase;
 
     private const INDEX_ROUTES = [
-        '/', '/about', '/programs', '/projects', '/events', '/blog',
+        '/', '/about', '/team', '/programs', '/projects', '/events', '/blog',
         '/news', '/gallery', '/faqs', '/resources', '/contact',
         '/campaigns', '/donate', '/success-stories',
     ];

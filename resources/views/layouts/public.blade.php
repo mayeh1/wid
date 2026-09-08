@@ -53,6 +53,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @livewireStyles
     </head>
     <body class="font-sans antialiased bg-white text-gray-900 dark:bg-purple-950 dark:text-gray-100 transition-colors">
         <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:bg-white focus:text-purple-700 focus:px-4 focus:py-2 focus:rounded">
@@ -75,6 +76,7 @@
                         <nav class="hidden lg:flex items-center gap-8">
                             <a href="{{ url('/') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Home</a>
                             <a href="{{ url('/about') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">About</a>
+                            <a href="{{ url('/team') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Team</a>
                             <a href="{{ url('/programs') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Programs</a>
                             <a href="{{ url('/projects') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Projects</a>
                             <a href="{{ url('/events') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Events</a>
@@ -110,6 +112,7 @@
                     <nav class="px-4 py-4 flex flex-col gap-1">
                         <a href="{{ url('/') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Home</a>
                         <a href="{{ url('/about') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">About</a>
+                        <a href="{{ url('/team') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Team</a>
                         <a href="{{ url('/programs') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Programs</a>
                         <a href="{{ url('/projects') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Projects</a>
                         <a href="{{ url('/events') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Events</a>
@@ -217,5 +220,7 @@
         </div>
 
         <x-cookie-consent />
+
+        @livewireScripts
     </body>
 </html>

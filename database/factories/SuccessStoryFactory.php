@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\SuccessStory;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
- * @extends Factory<SuccessStory>
+ * @extends Factory<\App\Models\SuccessStory>
  */
 class SuccessStoryFactory extends Factory
 {
@@ -17,8 +17,16 @@ class SuccessStoryFactory extends Factory
      */
     public function definition(): array
     {
+        $title = $this->faker->unique()->sentence(3);
+
         return [
-            //
+            'title' => $title,
+            'slug' => Str::slug($title).'-'.$this->faker->unique()->numberBetween(1000, 9999),
+            'category' => $this->faker->word(),
+            'excerpt' => $this->faker->sentence(),
+            'story' => '<p>'.$this->faker->paragraph().'</p>',
+            'is_featured' => false,
+            'is_published' => true,
         ];
     }
 }

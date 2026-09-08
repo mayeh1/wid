@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\TeamMember;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<TeamMember>
+ * @extends Factory<\App\Models\TeamMember>
  */
 class TeamMemberFactory extends Factory
 {
@@ -18,7 +17,13 @@ class TeamMemberFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'role_title' => $this->faker->jobTitle(),
+            'category' => 'board_member',
+            'bio' => $this->faker->paragraph(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'order' => 0,
+            'is_active' => true,
         ];
     }
 }

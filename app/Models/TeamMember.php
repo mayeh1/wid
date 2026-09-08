@@ -13,7 +13,9 @@ class TeamMember extends Model implements HasMedia
     use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
-        'name', 'role_title', 'category', 'bio', 'email', 'linkedin_url', 'order', 'is_active',
+        'name', 'role_title', 'category', 'bio', 'email', 'linkedin_url',
+        'portfolio_url', 'website_url', 'twitter_url', 'facebook_url', 'instagram_url',
+        'order', 'is_active',
     ];
 
     protected function casts(): array
@@ -31,6 +33,21 @@ class TeamMember extends Model implements HasMedia
     public function photoUrl(): ?string
     {
         return $this->getFirstMediaUrl('photo') ?: null;
+    }
+
+    /**
+     * Social/external links keyed by a label and icon hint, skipping any that aren't filled in.
+     */
+    public function links(): array
+    {
+        return array_filter([
+            'website' => $this->website_url,
+            'portfolio' => $this->portfolio_url,
+            'linkedin' => $this->linkedin_url,
+            'twitter' => $this->twitter_url,
+            'facebook' => $this->facebook_url,
+            'instagram' => $this->instagram_url,
+        ]);
     }
 
     public function scopeActive($query)

@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\Volunteer;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Volunteer>
+ * @extends Factory<\App\Models\Volunteer>
  */
 class VolunteerFactory extends Factory
 {
@@ -18,7 +18,10 @@ class VolunteerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => User::factory(),
+            'phone' => $this->faker->phoneNumber(),
+            'bio' => $this->faker->paragraph(),
+            'status' => 'pending',
         ];
     }
 }

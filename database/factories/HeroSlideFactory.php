@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\HeroSlide;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<HeroSlide>
+ * @extends Factory<\App\Models\HeroSlide>
  */
 class HeroSlideFactory extends Factory
 {
@@ -18,7 +17,12 @@ class HeroSlideFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'heading' => $this->faker->sentence(4),
+            'subheading' => $this->faker->sentence(),
+            'cta_label' => 'Learn More',
+            'cta_url' => '/about',
+            'is_published' => true,
+            'order' => 0,
         ];
     }
 }

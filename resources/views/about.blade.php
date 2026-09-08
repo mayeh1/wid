@@ -50,55 +50,41 @@
                 @if ($founder->bio)
                     <p class="mt-4 text-gray-600 dark:text-purple-200 leading-relaxed">{{ $founder->bio }}</p>
                 @endif
+                @php $founderLinks = $founder->links(); @endphp
+                @if (!empty($founderLinks))
+                    <div class="mt-5 flex flex-wrap justify-center gap-3">
+                        @foreach ($founderLinks as $type => $url)
+                            <a href="{{ $url }}" target="_blank" rel="noopener noreferrer"
+                               class="inline-flex items-center gap-1.5 rounded-full bg-white dark:bg-purple-800/60 px-3 py-1.5 text-xs font-medium text-purple-700 dark:text-gold-300 hover:bg-gold-100 dark:hover:bg-purple-700 transition-colors shadow-sm">
+                                <x-team-link-icon :type="$type" />
+                                {{ ucfirst($type) }}
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
             </div>
         </section>
     @endif
 
     @if ($boardMembers->isNotEmpty())
         <section class="bg-white dark:bg-purple-950 py-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="font-display font-bold text-3xl text-purple-800 dark:text-gold-400 text-center mb-12">Board of Directors</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
-                    @foreach ($boardMembers as $member)
-                        <div class="text-center">
-                            @if ($member->photoUrl())
-                                <img src="{{ $member->photoUrl() }}" alt="{{ $member->name }}" class="w-20 h-20 rounded-full object-cover mx-auto mb-3">
-                            @else
-                                <div class="w-20 h-20 rounded-full bg-purple-100 dark:bg-purple-800 flex items-center justify-center mx-auto mb-3 text-purple-700 dark:text-gold-400 font-display font-bold text-xl">
-                                    {{ mb_substr($member->name, 0, 1) }}
-                                </div>
-                            @endif
-                            <p class="font-semibold text-sm text-purple-800 dark:text-gold-400">{{ $member->name }}</p>
-                            <p class="text-xs text-gray-500 dark:text-purple-300">{{ $member->role_title }}</p>
-                        </div>
-                    @endforeach
-                </div>
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="font-display font-bold text-3xl text-purple-800 dark:text-gold-400 text-center mb-4">Board of Directors</h2>
+                <p class="text-center text-sm text-gray-500 dark:text-purple-300 mb-12">Click a member to read their bio and connect.</p>
+                <x-team-member-grid :members="$boardMembers" />
             </div>
         </section>
     @endif
 
-    @if ($staff->isNotEmpty())
-        <section class="bg-purple-50 dark:bg-purple-900/30 py-20">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 class="font-display font-bold text-3xl text-purple-800 dark:text-gold-400 text-center mb-12">Our Team</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-8">
-                    @foreach ($staff as $member)
-                        <div class="text-center">
-                            @if ($member->photoUrl())
-                                <img src="{{ $member->photoUrl() }}" alt="{{ $member->name }}" class="w-20 h-20 rounded-full object-cover mx-auto mb-3">
-                            @else
-                                <div class="w-20 h-20 rounded-full bg-purple-100 dark:bg-purple-800 flex items-center justify-center mx-auto mb-3 text-purple-700 dark:text-gold-400 font-display font-bold text-xl">
-                                    {{ mb_substr($member->name, 0, 1) }}
-                                </div>
-                            @endif
-                            <p class="font-semibold text-sm text-purple-800 dark:text-gold-400">{{ $member->name }}</p>
-                            <p class="text-xs text-gray-500 dark:text-purple-300">{{ $member->role_title }}</p>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-    @endif
+    <section class="bg-purple-50 dark:bg-purple-900/30 py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="font-display font-bold text-2xl text-purple-800 dark:text-gold-400">Meet Our Team</h2>
+            <p class="mt-3 text-gray-600 dark:text-purple-200">Get to know the staff and advisors who bring our mission to life every day.</p>
+            <a href="{{ route('team') }}" class="mt-6 inline-flex items-center justify-center rounded-full bg-purple-800 dark:bg-gold-500 px-8 py-3.5 text-sm font-bold text-white dark:text-purple-950 hover:bg-purple-700 dark:hover:bg-gold-400 transition-colors">
+                Meet Our Team
+            </a>
+        </div>
+    </section>
 
     @if ($page)
         <section class="bg-white dark:bg-purple-950 py-20">

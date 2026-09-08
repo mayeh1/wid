@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Download;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Download>
+ * @extends Factory<\App\Models\Download>
  */
 class DownloadFactory extends Factory
 {
@@ -18,7 +17,11 @@ class DownloadFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->sentence(3),
+            'description' => $this->faker->sentence(),
+            'category' => 'annual_report',
+            'year' => $this->faker->numberBetween(2020, 2026),
+            'is_published' => true,
         ];
     }
 }

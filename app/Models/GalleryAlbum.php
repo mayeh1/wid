@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -26,12 +27,16 @@ class GalleryAlbum extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('cover')->singleFile();
-        $this->addMediaCollection('photos');
+    }
+
+    public function photos(): HasMany
+    {
+        return $this->hasMany(GalleryPhoto::class)->orderBy('order');
     }
 
     public function coverUrl(): ?string
     {
-        return $this->getFirstMediaUrl('cover') ?: $this->getFirstMediaUrl('photos') ?: null;
+        return $this->getFirstMediaUrl('cover') ?: $this->photos()->first()?->photoUrl();
     }
 
     public function scopePublished($query)

@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Testimonial;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Testimonial>
+ * @extends Factory<\App\Models\Testimonial>
  */
 class TestimonialFactory extends Factory
 {
@@ -18,7 +17,13 @@ class TestimonialFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name(),
+            'role' => $this->faker->jobTitle(),
+            'quote' => $this->faker->paragraph(),
+            'rating' => 5,
+            'is_featured' => false,
+            'is_published' => true,
+            'order' => 0,
         ];
     }
 }

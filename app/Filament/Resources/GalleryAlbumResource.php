@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Concerns\AuthorizesViaPermissions;
 use App\Filament\Resources\GalleryAlbumResource\Pages;
+use App\Filament\Resources\GalleryAlbumResource\RelationManagers;
 use App\Models\GalleryAlbum;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -36,17 +37,17 @@ class GalleryAlbumResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (string $state, Forms\Set $set, ?string $slug) => $slug === null && $set('slug', Str::slug($state))),
+                            ->afterStateUpdated(fn (string $state, Forms\Set $set, Forms\Get $get) => $get('slug') === null && $set('slug', Str::slug($state))),
                         Forms\Components\TextInput::make('slug')->required()->unique(ignoreRecord: true)->maxLength(255),
                         Forms\Components\Select::make('type')->options(['photos' => 'Photos', 'videos' => 'Videos', 'mixed' => 'Mixed'])->required(),
                         Forms\Components\TextInput::make('order')->numeric()->default(0),
                         Forms\Components\Textarea::make('description')->columnSpanFull()->rows(2),
                         Forms\Components\Toggle::make('is_published')->default(true),
                     ]),
-                Forms\Components\Section::make('Media')
+                Forms\Components\Section::make('Cover Image')
+                    ->description('Shown on the gallery listing page. If left empty, the first photo below is used instead.')
                     ->schema([
                         SpatieMediaLibraryFileUpload::make('cover')->collection('cover')->image(),
-                        SpatieMediaLibraryFileUpload::make('photos')->collection('photos')->image()->multiple()->reorderable(),
                     ]),
             ]);
     }
@@ -59,7 +60,7 @@ class GalleryAlbumResource extends Resource
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('cover')->collection('cover'),
                 Tables\Columns\TextColumn::make('title')->searchable(),
                 Tables\Columns\TextColumn::make('type')->badge(),
-                Tables\Columns\TextColumn::make('photos_count')->counts('media')->label('Items'),
+                Tables\Columns\TextColumn::make('photos_count')->counts('photos')->label('Photos'),
                 Tables\Columns\IconColumn::make('is_published')->boolean(),
             ])
             ->actions([
@@ -71,6 +72,13 @@ class GalleryAlbumResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\PhotosRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

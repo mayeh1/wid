@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\PaymentMethod;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
- * @extends Factory<PaymentMethod>
+ * @extends Factory<\App\Models\PaymentMethod>
  */
 class PaymentMethodFactory extends Factory
 {
@@ -17,8 +17,15 @@ class PaymentMethodFactory extends Factory
      */
     public function definition(): array
     {
+        $name = $this->faker->unique()->words(2, true).' Payment';
+
         return [
-            //
+            'name' => $name,
+            'slug' => Str::slug($name).'-'.$this->faker->unique()->numberBetween(1000, 9999),
+            'type' => 'manual',
+            'instructions' => $this->faker->sentence(),
+            'is_enabled' => true,
+            'order' => 0,
         ];
     }
 }

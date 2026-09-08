@@ -2,11 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Partner;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Partner>
+ * @extends Factory<\App\Models\Partner>
  */
 class PartnerFactory extends Factory
 {
@@ -18,7 +17,10 @@ class PartnerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->company(),
+            'website_url' => $this->faker->url(),
+            'is_published' => true,
+            'order' => 0,
         ];
     }
 }

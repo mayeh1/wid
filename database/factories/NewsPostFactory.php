@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\NewsPost;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
- * @extends Factory<NewsPost>
+ * @extends Factory<\App\Models\NewsPost>
  */
 class NewsPostFactory extends Factory
 {
@@ -17,8 +17,16 @@ class NewsPostFactory extends Factory
      */
     public function definition(): array
     {
+        $title = $this->faker->unique()->sentence(4);
+
         return [
-            //
+            'title' => $title,
+            'slug' => Str::slug($title).'-'.$this->faker->unique()->numberBetween(1000, 9999),
+            'type' => 'announcement',
+            'excerpt' => $this->faker->sentence(),
+            'body' => '<p>'.$this->faker->paragraph().'</p>',
+            'is_published' => true,
+            'published_at' => now(),
         ];
     }
 }
