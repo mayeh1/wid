@@ -40,7 +40,7 @@ class ResourceBootTest extends TestCase
         'testimonials', 'partners', 'faqs', 'downloads', 'hero-slides', 'menus',
         'contact-messages', 'payment-methods', 'campaigns', 'donations',
         'volunteers', 'membership-levels', 'memberships', 'success-stories',
-        'newsletter-subscribers', 'activities',
+        'newsletter-subscribers', 'activities', 'users',
     ];
 
     /**
@@ -77,6 +77,7 @@ class ResourceBootTest extends TestCase
             'memberships' => [true, fn () => Membership::factory()->create()],
             'success-stories' => [true, fn () => SuccessStory::factory()->create()],
             'newsletter-subscribers' => [true, fn () => NewsletterSubscriber::create(['email' => 'sub@example.com'])],
+            'users' => [true, fn () => User::factory()->create()],
             // 'activities' intentionally excluded: read-only, no create/edit pages.
         ];
     }

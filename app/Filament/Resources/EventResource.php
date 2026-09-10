@@ -18,7 +18,7 @@ class EventResource extends Resource
 {
     use AuthorizesViaPermissions;
 
-    protected static string $permissionGroup = 'content';
+    protected static string $permissionGroup = 'events';
 
     protected static ?string $model = Event::class;
 

@@ -14,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->validateCsrfTokens(except: [
             'webhooks/*',
         ]);
+
+        $middleware->alias([
+            'account.approved' => \App\Http\Middleware\EnsureAccountApproved::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

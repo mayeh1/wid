@@ -69,4 +69,43 @@ class PermissionBoundaryTest extends TestCase
         $this->actingAs($admin)->get('/admin/manage-site-settings')->assertOk();
         $this->actingAs($admin)->get('/admin/reports')->assertOk();
     }
+
+    public function test_accountant_has_read_only_financial_access(): void
+    {
+        $this->seed(RolePermissionSeeder::class);
+        $user = User::factory()->create();
+        $user->assignRole('Accountant');
+
+        $this->actingAs($user)->get('/admin/donations')->assertOk();
+        $this->actingAs($user)->get('/admin/payment-methods')->assertOk();
+        $this->actingAs($user)->get('/admin/reports')->assertOk();
+        // No create page: read-only role, no "manage" grant.
+        $this->actingAs($user)->get('/admin/payment-methods/create')->assertForbidden();
+        $this->actingAs($user)->get('/admin/pages')->assertForbidden();
+    }
+
+    public function test_event_manager_can_access_events_but_not_other_content(): void
+    {
+        $this->seed(RolePermissionSeeder::class);
+        $user = User::factory()->create();
+        $user->assignRole('Event Manager');
+
+        $this->actingAs($user)->get('/admin/events')->assertOk();
+        $this->actingAs($user)->get('/admin/events/create')->assertOk();
+        $this->actingAs($user)->get('/admin/pages/create')->assertForbidden();
+        $this->actingAs($user)->get('/admin/donations')->assertForbidden();
+    }
+
+    public function test_board_member_has_read_only_governance_access(): void
+    {
+        $this->seed(RolePermissionSeeder::class);
+        $user = User::factory()->create();
+        $user->assignRole('Board Member');
+
+        $this->actingAs($user)->get('/admin/donations')->assertOk();
+        $this->actingAs($user)->get('/admin/campaigns')->assertOk();
+        $this->actingAs($user)->get('/admin/activities')->assertOk();
+        $this->actingAs($user)->get('/admin/campaigns/create')->assertForbidden();
+        $this->actingAs($user)->get('/admin/payment-methods')->assertForbidden();
+    }
 }

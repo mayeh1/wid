@@ -61,6 +61,11 @@ class ActivityResource extends Resource
                     \App\Models\Donation::class => 'Donation',
                     \App\Models\User::class => 'User',
                     \App\Models\PaymentMethod::class => 'Payment Method',
+                    \App\Models\Volunteer::class => 'Volunteer',
+                    \App\Models\Membership::class => 'Membership',
+                    \App\Models\Campaign::class => 'Campaign',
+                    \App\Models\TeamMember::class => 'Team Member',
+                    \App\Models\Page::class => 'Page',
                 ]),
             ])
             ->actions([

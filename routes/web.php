@@ -3,6 +3,7 @@
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\BlogController;
+use App\Livewire\Actions\Logout;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DonationController;
@@ -83,25 +84,37 @@ Route::get('/success-stories/{slug}', [SuccessStoryController::class, 'show'])->
 Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/volunteer', [VolunteerController::class, 'create'])->name('volunteer.create');
-    Route::post('/volunteer', [VolunteerController::class, 'store'])->name('volunteer.store');
-    Route::get('/volunteer/dashboard', [VolunteerController::class, 'dashboard'])->name('volunteer.dashboard');
-    Route::get('/volunteer/certificate', [VolunteerController::class, 'certificate'])->name('volunteer.certificate');
+    Route::get('/account/pending', function () {
+        return view('account-pending');
+    })->name('account.pending');
 
-    Route::get('/membership', [MembershipController::class, 'create'])->name('membership.create');
-    Route::post('/membership', [MembershipController::class, 'store'])->name('membership.store');
-    Route::get('/membership/dashboard', [MembershipController::class, 'dashboard'])->name('membership.dashboard');
-    Route::post('/membership/renew', [MembershipController::class, 'renew'])->name('membership.renew');
+    Route::middleware('account.approved')->group(function () {
+        Route::get('/volunteer', [VolunteerController::class, 'create'])->name('volunteer.create');
+        Route::post('/volunteer', [VolunteerController::class, 'store'])->name('volunteer.store');
+        Route::get('/volunteer/dashboard', [VolunteerController::class, 'dashboard'])->name('volunteer.dashboard');
+        Route::get('/volunteer/certificate', [VolunteerController::class, 'certificate'])->name('volunteer.certificate');
+
+        Route::get('/membership', [MembershipController::class, 'create'])->name('membership.create');
+        Route::post('/membership', [MembershipController::class, 'store'])->name('membership.store');
+        Route::get('/membership/dashboard', [MembershipController::class, 'dashboard'])->name('membership.dashboard');
+        Route::post('/membership/renew', [MembershipController::class, 'renew'])->name('membership.renew');
+    });
 
     Route::get('/admin/reports/summary.pdf', [ReportController::class, 'summaryPdf'])->name('admin.reports.summary-pdf');
 });
 
 Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
+    ->middleware(['auth', 'verified', 'account.approved'])
     ->name('dashboard');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
+
+Route::post('/logout', function (Logout $logout) {
+    $logout();
+
+    return redirect('/');
+})->middleware('auth')->name('logout');
 
 require __DIR__.'/auth.php';

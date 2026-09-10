@@ -30,7 +30,7 @@ class DemoActivitySeeder extends Seeder
         foreach ($volunteers as $data) {
             $user = User::firstOrCreate(
                 ['email' => str($data['name'])->slug('.').'@example.com'],
-                ['name' => $data['name'], 'password' => bcrypt('password')]
+                ['name' => $data['name'], 'password' => bcrypt('password'), 'status' => 'approved']
             );
 
             $volunteer = Volunteer::updateOrCreate(
