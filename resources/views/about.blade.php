@@ -43,7 +43,7 @@
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <p class="uppercase tracking-[0.3em] text-gold-600 dark:text-gold-400 text-xs font-semibold mb-6">Founder</p>
                 @if ($founder->photoUrl())
-                    <img src="{{ $founder->photoUrl() }}" alt="{{ $founder->name }}" class="w-28 h-28 rounded-full object-cover mx-auto mb-5">
+                    <img src="{{ $founder->photoUrl() }}" alt="{{ $founder->name }}" class="w-48 aspect-[3/4] rounded-2xl object-cover mx-auto mb-5 shadow-lg">
                 @endif
                 <h2 class="font-display font-bold text-2xl text-purple-800 dark:text-gold-400">{{ $founder->name }}</h2>
                 <p class="text-sm text-gray-500 dark:text-purple-300">{{ $founder->role_title }}</p>
