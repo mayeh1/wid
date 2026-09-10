@@ -73,19 +73,30 @@
                             </span>
                         </a>
 
-                        <nav class="hidden lg:flex items-center gap-8">
-                            <a href="{{ url('/') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Home</a>
-                            <a href="{{ url('/about') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">About</a>
-                            <a href="{{ url('/team') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Team</a>
-                            <a href="{{ url('/programs') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Programs</a>
-                            <a href="{{ url('/projects') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Projects</a>
-                            <a href="{{ url('/events') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Events</a>
-                            <a href="{{ url('/blog') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Blog</a>
-                            <a href="{{ url('/gallery') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Gallery</a>
-                            <a href="{{ url('/contact') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400">Contact</a>
+                        <nav class="hidden xl:flex items-center gap-5">
+                            <a href="{{ url('/') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Home</a>
+                            <a href="{{ url('/about') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">About</a>
+                            <a href="{{ url('/team') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Team</a>
+                            <a href="{{ url('/programs') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Programs</a>
+                            <a href="{{ url('/projects') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Projects</a>
+                            <a href="{{ url('/events') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Events</a>
+                            <a href="{{ url('/blog') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Blog</a>
+                            <a href="{{ url('/gallery') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Gallery</a>
+                            <a href="{{ url('/contact') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Contact</a>
                         </nav>
 
                         <div class="flex items-center gap-3">
+                            @auth
+                                <a href="{{ route('dashboard') }}"
+                                   class="hidden lg:inline-flex items-center gap-1.5 text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">
+                                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                    {{ Illuminate\Support\Str::limit(auth()->user()->name, 14) }}
+                                </a>
+                            @else
+                                <a href="{{ route('login') }}" class="hidden lg:inline text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Log In</a>
+                                <a href="{{ route('register') }}" class="hidden lg:inline text-sm font-semibold text-purple-700 dark:text-gold-400 hover:underline whitespace-nowrap">Sign Up</a>
+                            @endauth
+
                             <button @click="dark = !dark" type="button"
                                     class="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-purple-900"
                                     aria-label="Toggle dark mode">
@@ -99,7 +110,7 @@
                             </a>
 
                             <button @click="mobileMenuOpen = !mobileMenuOpen" type="button"
-                                    class="lg:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-purple-900"
+                                    class="xl:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-purple-900"
                                     aria-label="Toggle menu">
                                 <svg x-show="!mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
                                 <svg x-show="mobileMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -109,7 +120,7 @@
                 </div>
 
                 {{-- Mobile menu --}}
-                <div x-show="mobileMenuOpen" x-cloak x-transition class="lg:hidden border-t border-gray-100 dark:border-purple-900 bg-white dark:bg-purple-950">
+                <div x-show="mobileMenuOpen" x-cloak x-transition class="xl:hidden border-t border-gray-100 dark:border-purple-900 bg-white dark:bg-purple-950">
                     <nav class="px-4 py-4 flex flex-col gap-1">
                         <a href="{{ url('/') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Home</a>
                         <a href="{{ url('/about') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">About</a>
@@ -120,6 +131,16 @@
                         <a href="{{ url('/blog') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Blog</a>
                         <a href="{{ url('/gallery') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Gallery</a>
                         <a href="{{ url('/contact') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Contact</a>
+
+                        <div class="my-2 border-t border-gray-100 dark:border-purple-900"></div>
+
+                        @auth
+                            <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">My Account</a>
+                        @else
+                            <a href="{{ route('login') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Log In</a>
+                            <a href="{{ route('register') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-purple-700 dark:text-gold-400 hover:bg-gray-50 dark:hover:bg-purple-900">Sign Up</a>
+                        @endauth
+
                         <a href="{{ url('/donate') }}" class="mt-2 inline-flex justify-center items-center rounded-full bg-gold-500 px-5 py-2.5 text-sm font-bold text-purple-950">Donate Now</a>
                     </nav>
                 </div>

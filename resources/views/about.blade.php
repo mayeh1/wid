@@ -42,10 +42,12 @@
         <section class="bg-purple-50 dark:bg-purple-900/30 py-20">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <p class="uppercase tracking-[0.3em] text-gold-600 dark:text-gold-400 text-xs font-semibold mb-6">Founder</p>
-                @if ($founder->photoUrl())
-                    <img src="{{ $founder->photoUrl() }}" alt="{{ $founder->name }}" class="w-48 aspect-[3/4] rounded-2xl object-cover mx-auto mb-5 shadow-lg">
-                @endif
-                <h2 class="font-display font-bold text-2xl text-purple-800 dark:text-gold-400">{{ $founder->name }}</h2>
+                <a href="{{ route('people.show', $founder->slug) }}">
+                    @if ($founder->photoUrl())
+                        <img src="{{ $founder->photoUrl() }}" alt="{{ $founder->name }}" class="w-48 aspect-[3/4] rounded-2xl object-cover mx-auto mb-5 shadow-lg hover:opacity-90 transition-opacity">
+                    @endif
+                    <h2 class="font-display font-bold text-2xl text-purple-800 dark:text-gold-400 hover:underline">{{ $founder->name }}</h2>
+                </a>
                 <p class="text-sm text-gray-500 dark:text-purple-300">{{ $founder->role_title }}</p>
                 @if ($founder->bio)
                     <p class="mt-4 text-gray-600 dark:text-purple-200 leading-relaxed">{{ $founder->bio }}</p>
@@ -62,6 +64,9 @@
                         @endforeach
                     </div>
                 @endif
+                <a href="{{ route('people.show', $founder->slug) }}" class="mt-6 inline-flex items-center text-sm font-semibold text-purple-700 dark:text-gold-400 hover:underline">
+                    Read Full Profile &rarr;
+                </a>
             </div>
         </section>
     @endif

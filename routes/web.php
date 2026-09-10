@@ -15,6 +15,7 @@ use App\Http\Controllers\MembershipController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SuccessStoryController;
@@ -26,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', [AboutController::class, 'index'])->name('about');
 Route::get('/team', [TeamController::class, 'index'])->name('team');
+Route::get('/people/{slug}', [PersonController::class, 'show'])->name('people.show');
 Route::get('/faqs', [FaqController::class, 'index'])->name('faqs');
 Route::get('/resources', [DownloadController::class, 'index'])->name('resources');
 

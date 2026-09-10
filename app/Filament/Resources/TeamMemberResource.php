@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Illuminate\Support\Str;
 
 class TeamMemberResource extends Resource
 {
@@ -36,7 +37,16 @@ class TeamMemberResource extends Resource
                             ->image()
                             ->avatar()
                             ->columnSpanFull(),
-                        Forms\Components\TextInput::make('name')->required()->maxLength(255),
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (string $state, Forms\Set $set, Forms\Get $get) => $get('slug') === null && $set('slug', Str::slug($state))),
+                        Forms\Components\TextInput::make('slug')
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(255)
+                            ->helperText('Used in this person\'s public profile URL.'),
                         Forms\Components\TextInput::make('role_title')->required()->maxLength(255),
                         Forms\Components\Select::make('category')
                             ->options([

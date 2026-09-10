@@ -13,7 +13,7 @@ class TeamMember extends Model implements HasMedia
     use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
-        'name', 'role_title', 'category', 'bio', 'email', 'linkedin_url',
+        'name', 'slug', 'role_title', 'category', 'bio', 'email', 'linkedin_url',
         'portfolio_url', 'website_url', 'twitter_url', 'facebook_url', 'instagram_url',
         'order', 'is_active',
     ];

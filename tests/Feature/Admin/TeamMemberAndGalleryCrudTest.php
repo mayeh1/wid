@@ -27,6 +27,7 @@ class TeamMemberAndGalleryCrudTest extends TestCase
             ->test(CreateTeamMember::class)
             ->fillForm([
                 'name' => 'Jane Founder',
+                'slug' => 'jane-founder',
                 'role_title' => 'Board Chair',
                 'category' => 'board_member',
                 'bio' => 'A passionate advocate for women in development.',

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\TeamMember;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -48,5 +49,28 @@ class PublicPagesTest extends TestCase
         $this->post('/newsletter', ['email' => 'dup@example.com']);
 
         $this->assertDatabaseCount('newsletter_subscribers', 1);
+    }
+
+    public function test_team_member_portfolio_page_boots_and_shows_their_details(): void
+    {
+        $member = TeamMember::factory()->create([
+            'name' => 'Jane Founder',
+            'slug' => 'jane-founder',
+            'bio' => 'A passionate advocate for women in development.',
+            'website_url' => 'https://example.com',
+        ]);
+
+        $response = $this->get("/people/{$member->slug}");
+
+        $response->assertOk();
+        $response->assertSee('Jane Founder');
+        $response->assertSee('A passionate advocate for women in development.');
+    }
+
+    public function test_inactive_team_member_portfolio_page_404s(): void
+    {
+        $member = TeamMember::factory()->create(['slug' => 'inactive-person', 'is_active' => false]);
+
+        $this->get("/people/{$member->slug}")->assertNotFound();
     }
 }
