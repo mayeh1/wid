@@ -44,8 +44,9 @@ class DonationController extends Controller
                 if ($manager->driverFor($donation->paymentMethod)->verify($donation, $donation->paymentMethod)) {
                     $this->sendReceipt($donation);
                 }
-            } catch (\Throwable) {
-                // Verification failed silently here; the webhook (where configured)
+            } catch (\Throwable $e) {
+                report($e);
+                // Verification failed here; the webhook (where configured)
                 // remains the source of truth and will complete the donation.
             }
         }

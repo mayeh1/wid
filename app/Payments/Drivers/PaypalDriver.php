@@ -60,10 +60,10 @@ class PaypalDriver implements PaymentGatewayDriver
         $baseUrl = $this->baseUrl($method);
 
         $response = Http::withToken($token)
-            ->post("{$baseUrl}/v2/checkout/orders/{$donation->gateway_reference}/capture")
-            ->json();
+            ->withHeaders(['Content-Type' => 'application/json'])
+            ->post("{$baseUrl}/v2/checkout/orders/{$donation->gateway_reference}/capture", (object) []);
 
-        if (($response['status'] ?? null) === 'COMPLETED') {
+        if ($response->json('status') === 'COMPLETED') {
             $donation->markCompleted();
 
             return true;
