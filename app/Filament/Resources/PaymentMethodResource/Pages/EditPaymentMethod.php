@@ -16,4 +16,14 @@ class EditPaymentMethod extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        return PaymentMethodResource::spreadConfigIntoFlatFields($data);
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        return PaymentMethodResource::assembleConfigFromFlatFields($data);
+    }
 }
