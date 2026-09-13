@@ -77,6 +77,8 @@ class User extends Authenticatable implements FilamentUser
             'Donor Manager',
             'Moderator',
             'Board Member',
+            'Founder',
+            'Team Member',
         ]);
     }
 

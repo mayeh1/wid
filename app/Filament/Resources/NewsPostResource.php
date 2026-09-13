@@ -17,7 +17,7 @@ class NewsPostResource extends Resource
 {
     use AuthorizesViaPermissions;
 
-    protected static string $permissionGroup = 'content';
+    protected static string $permissionGroup = 'news_posts';
 
     protected static ?string $model = NewsPost::class;
 

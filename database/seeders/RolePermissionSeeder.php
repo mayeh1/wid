@@ -15,6 +15,8 @@ class RolePermissionSeeder extends Seeder
     private const PERMISSION_GROUPS = [
         'content' => ['view', 'create', 'update', 'delete', 'publish'],
         'events' => ['view', 'create', 'update', 'delete', 'publish'],
+        'blog_posts' => ['view', 'create', 'update', 'delete', 'publish'],
+        'news_posts' => ['view', 'create', 'update', 'delete', 'publish'],
         'donations' => ['view', 'approve', 'reject', 'verify_payment', 'export'],
         'payment_methods' => ['view', 'manage'],
         'campaigns' => ['view', 'manage'],
@@ -41,11 +43,11 @@ class RolePermissionSeeder extends Seeder
     private const ROLE_GRANTS = [
         'Super Admin' => ['*'],
         'Admin' => [
-            'content', 'events', 'donations', 'payment_methods', 'campaigns', 'volunteers', 'members',
-            'projects', 'donors', 'moderation', 'users', 'settings', 'seo',
+            'content', 'events', 'blog_posts', 'news_posts', 'donations', 'payment_methods', 'campaigns',
+            'volunteers', 'members', 'projects', 'donors', 'moderation', 'users', 'settings', 'seo',
         ],
-        'Editor' => ['content', 'moderation'],
-        'Content Manager' => ['content', 'campaigns.view', 'campaigns.manage'],
+        'Editor' => ['content', 'blog_posts', 'news_posts', 'moderation'],
+        'Content Manager' => ['content', 'blog_posts', 'news_posts', 'campaigns.view', 'campaigns.manage'],
         'Finance Manager' => [
             'donations', 'payment_methods', 'campaigns.view', 'donors.view', 'donors.export',
         ],
@@ -64,10 +66,24 @@ class RolePermissionSeeder extends Seeder
         // Read-only governance/oversight seat: can see financial reports, the
         // activity log, campaign and project status, and volunteer/member
         // counts, without any ability to create, edit, or delete records.
+        // Also gets the self-service "My Profile" page (gated separately by
+        // a linked TeamMember record, not a permission) to edit their own
+        // bio/photo/links - never anyone else's.
         'Board Member' => [
             'donations.view', 'campaigns.view', 'projects.view', 'volunteers.view',
             'members.view', 'donors.view', 'users.view',
         ],
+        // Same oversight visibility as Board Member, plus the ability to
+        // write/edit/publish blog and news posts herself - nothing else.
+        'Founder' => [
+            'donations.view', 'campaigns.view', 'projects.view', 'volunteers.view',
+            'members.view', 'donors.view', 'users.view', 'blog_posts', 'news_posts',
+        ],
+        // No oversight or content permissions at all - deliberately the
+        // lowest-privilege role. Can only log in and edit their own bio via
+        // "My Profile" once a Super Admin links their account to a
+        // TeamMember record. Strictly lower privilege than Board Member.
+        'Team Member' => [],
     ];
 
     public function run(): void

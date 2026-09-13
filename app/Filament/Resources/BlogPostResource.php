@@ -18,7 +18,7 @@ class BlogPostResource extends Resource
 {
     use AuthorizesViaPermissions;
 
-    protected static string $permissionGroup = 'content';
+    protected static string $permissionGroup = 'blog_posts';
 
     protected static ?string $model = BlogPost::class;
 

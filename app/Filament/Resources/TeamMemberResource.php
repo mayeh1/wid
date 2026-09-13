@@ -57,6 +57,13 @@ class TeamMemberResource extends Resource
                             ])
                             ->required(),
                         Forms\Components\TextInput::make('email')->email()->maxLength(255),
+                        Forms\Components\Select::make('user_id')
+                            ->label('Linked Login Account')
+                            ->relationship('user', 'name')
+                            ->searchable(['name', 'email'])
+                            ->preload()
+                            ->nullable()
+                            ->helperText('Optional. If this person has a site login (e.g. a Board Member, Team Member, or Founder role), link it here so they can edit their own bio and photo from "My Profile" in the admin panel.'),
                         Forms\Components\Textarea::make('bio')->columnSpanFull()->rows(4),
                         Forms\Components\TextInput::make('order')->numeric()->default(0),
                         Forms\Components\Toggle::make('is_active')->default(true),
@@ -85,6 +92,7 @@ class TeamMemberResource extends Resource
                 Tables\Columns\TextColumn::make('name')->searchable(),
                 Tables\Columns\TextColumn::make('role_title')->searchable(),
                 Tables\Columns\TextColumn::make('category')->badge(),
+                Tables\Columns\TextColumn::make('user.name')->label('Linked Account')->placeholder('None')->toggleable(),
                 Tables\Columns\IconColumn::make('is_active')->boolean(),
             ])
             ->actions([

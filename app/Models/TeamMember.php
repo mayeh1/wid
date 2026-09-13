@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -23,10 +24,15 @@ class TeamMember extends Model implements HasMedia
     }
 
     protected $fillable = [
-        'name', 'slug', 'role_title', 'category', 'bio', 'email', 'linkedin_url',
+        'user_id', 'name', 'slug', 'role_title', 'category', 'bio', 'email', 'linkedin_url',
         'portfolio_url', 'website_url', 'twitter_url', 'facebook_url', 'instagram_url',
         'order', 'is_active',
     ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
     protected function casts(): array
     {
