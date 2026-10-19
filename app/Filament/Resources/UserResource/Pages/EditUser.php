@@ -29,6 +29,8 @@ class EditUser extends EditRecord
         $rolesAfterSave = $this->record->fresh()->roles->pluck('name')->sort()->values()->all();
 
         if ($this->rolesBeforeSave !== $rolesAfterSave) {
+            app(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
+
             activity()
                 ->causedBy(auth()->user())
                 ->performedOn($this->record)
