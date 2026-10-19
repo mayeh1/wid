@@ -77,11 +77,20 @@
                             <a href="{{ url('/') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Home</a>
                             <a href="{{ url('/about') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">About</a>
                             <a href="{{ url('/team') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Team</a>
-                            <a href="{{ url('/programs') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Programs</a>
-                            <a href="{{ url('/projects') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Projects</a>
-                            <a href="{{ url('/events') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Events</a>
+                            <div x-data="{ open: false }" @mouseenter="open = true" @mouseleave="open = false" class="relative">
+                                <button @click="open = !open" class="inline-flex items-center gap-1 text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">
+                                    Work with Us
+                                    <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                                </button>
+                                <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 -translate-y-1" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-1"
+                                     class="absolute left-0 top-full mt-1 w-44 rounded-xl bg-white dark:bg-purple-900 shadow-lg ring-1 ring-gray-100 dark:ring-purple-800 py-2 z-50">
+                                    <a href="{{ url('/programs') }}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 dark:text-gray-200 dark:hover:bg-purple-800 dark:hover:text-gold-400">Programs</a>
+                                    <a href="{{ url('/projects') }}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 dark:text-gray-200 dark:hover:bg-purple-800 dark:hover:text-gold-400">Projects</a>
+                                    <a href="{{ url('/events') }}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 dark:text-gray-200 dark:hover:bg-purple-800 dark:hover:text-gold-400">Events</a>
+                                    <a href="{{ url('/gallery') }}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 dark:text-gray-200 dark:hover:bg-purple-800 dark:hover:text-gold-400">Gallery</a>
+                                </div>
+                            </div>
                             <a href="{{ url('/blog') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Blog</a>
-                            <a href="{{ url('/gallery') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Gallery</a>
                             <a href="{{ url('/contact') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Contact</a>
                         </nav>
 
@@ -125,11 +134,19 @@
                         <a href="{{ url('/') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Home</a>
                         <a href="{{ url('/about') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">About</a>
                         <a href="{{ url('/team') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Team</a>
-                        <a href="{{ url('/programs') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Programs</a>
-                        <a href="{{ url('/projects') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Projects</a>
-                        <a href="{{ url('/events') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Events</a>
+                        <div x-data="{ open: false }">
+                            <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">
+                                Work with Us
+                                <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                            </button>
+                            <div x-show="open" x-cloak x-collapse class="pl-4 flex flex-col gap-1">
+                                <a href="{{ url('/programs') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-purple-900">Programs</a>
+                                <a href="{{ url('/projects') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-purple-900">Projects</a>
+                                <a href="{{ url('/events') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-purple-900">Events</a>
+                                <a href="{{ url('/gallery') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-purple-900">Gallery</a>
+                            </div>
+                        </div>
                         <a href="{{ url('/blog') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Blog</a>
-                        <a href="{{ url('/gallery') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Gallery</a>
                         <a href="{{ url('/contact') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Contact</a>
 
                         <div class="my-2 border-t border-gray-100 dark:border-purple-900"></div>
