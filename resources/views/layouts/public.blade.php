@@ -90,6 +90,7 @@
                                     <a href="{{ url('/gallery') }}" class="block px-4 py-2 text-sm font-medium text-gray-700 hover:bg-purple-50 hover:text-purple-700 dark:text-gray-200 dark:hover:bg-purple-800 dark:hover:text-gold-400">Gallery</a>
                                 </div>
                             </div>
+                            <a href="{{ url('/products') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Products &amp; Services</a>
                             <a href="{{ url('/blog') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Blog</a>
                             <a href="{{ url('/contact') }}" class="text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Contact</a>
                         </nav>
@@ -105,6 +106,8 @@
                                 <a href="{{ route('login') }}" class="hidden lg:inline text-sm font-semibold text-gray-700 hover:text-purple-700 dark:text-gray-200 dark:hover:text-gold-400 whitespace-nowrap">Log In</a>
                                 <a href="{{ route('register') }}" class="hidden lg:inline text-sm font-semibold text-purple-700 dark:text-gold-400 hover:underline whitespace-nowrap">Sign Up</a>
                             @endauth
+
+                            <livewire:cart-icon />
 
                             <button @click="dark = !dark" type="button"
                                     class="p-2 rounded-full text-gray-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-purple-900"
@@ -146,6 +149,7 @@
                                 <a href="{{ url('/gallery') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-purple-900">Gallery</a>
                             </div>
                         </div>
+                        <a href="{{ url('/products') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Products &amp; Services</a>
                         <a href="{{ url('/blog') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Blog</a>
                         <a href="{{ url('/contact') }}" class="px-3 py-2 rounded-md text-sm font-semibold text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-purple-900">Contact</a>
 
@@ -216,6 +220,7 @@
                             <li><a href="{{ url('/blog') }}" class="hover:text-gold-400">Blog</a></li>
                             <li><a href="{{ url('/news') }}" class="hover:text-gold-400">News</a></li>
                             <li><a href="{{ url('/gallery') }}" class="hover:text-gold-400">Gallery</a></li>
+                            <li><a href="{{ url('/products') }}" class="hover:text-gold-400">Products &amp; Services</a></li>
                             <li><a href="{{ url('/faqs') }}" class="hover:text-gold-400">FAQs</a></li>
                             <li><a href="{{ url('/resources') }}" class="hover:text-gold-400">Resources &amp; Reports</a></li>
                         </ul>

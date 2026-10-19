@@ -29,6 +29,8 @@ class RolePermissionSeeder extends Seeder
         'roles' => ['manage'],
         'settings' => ['manage'],
         'seo' => ['manage'],
+        'products' => ['view', 'create', 'update', 'delete', 'publish'],
+        'orders' => ['view', 'manage', 'export'],
     ];
 
     /**
@@ -45,11 +47,13 @@ class RolePermissionSeeder extends Seeder
         'Admin' => [
             'content', 'events', 'blog_posts', 'news_posts', 'donations', 'payment_methods', 'campaigns',
             'volunteers', 'members', 'projects', 'donors', 'moderation', 'users', 'settings', 'seo',
+            'products', 'orders',
         ],
         'Editor' => ['content', 'blog_posts', 'news_posts', 'moderation'],
-        'Content Manager' => ['content', 'blog_posts', 'news_posts', 'campaigns.view', 'campaigns.manage'],
+        'Content Manager' => ['content', 'blog_posts', 'news_posts', 'campaigns.view', 'campaigns.manage', 'products'],
         'Finance Manager' => [
             'donations', 'payment_methods', 'campaigns.view', 'donors.view', 'donors.export',
+            'orders',
         ],
         // Read-only financial oversight - can review and export donation/payment
         // records for bookkeeping without being able to alter payment method
@@ -57,6 +61,7 @@ class RolePermissionSeeder extends Seeder
         'Accountant' => [
             'donations.view', 'donations.export', 'payment_methods.view',
             'campaigns.view', 'donors.view', 'donors.export',
+            'orders.view', 'orders.export',
         ],
         'Event Manager' => ['events', 'content.view'],
         'Volunteer Manager' => ['volunteers', 'members.view'],

@@ -7,6 +7,7 @@ use App\Livewire\Actions\Logout;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FaqController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PersonController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SuccessStoryController;
@@ -75,6 +77,15 @@ Route::get('/donate/instructions/{receiptNumber}', [DonationController::class, '
 Route::get('/donate/success/{receiptNumber}', [DonationController::class, 'success'])->name('donate.success');
 Route::get('/donate/cancel/{receiptNumber}', [DonationController::class, 'cancel'])->name('donate.cancel');
 Route::get('/donations/{receiptNumber}/receipt', [DonationController::class, 'receipt'])->name('donations.receipt');
+
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/cart', [OrderController::class, 'cart'])->name('cart');
+Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+Route::get('/orders/instructions/{orderNumber}', [OrderController::class, 'instructions'])->name('orders.instructions');
+Route::get('/orders/success/{orderNumber}', [OrderController::class, 'success'])->name('orders.success');
+Route::get('/orders/cancel/{orderNumber}', [OrderController::class, 'cancel'])->name('orders.cancel');
+Route::get('/orders/{orderNumber}/download/{item}', [OrderController::class, 'download'])->name('orders.download');
 
 Route::post('/webhooks/stripe', StripeWebhookController::class)->name('webhooks.stripe');
 
