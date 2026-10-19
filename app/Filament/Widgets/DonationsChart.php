@@ -11,6 +11,11 @@ class DonationsChart extends ChartWidget
 
     protected static ?int $sort = 2;
 
+    public static function canView(): bool
+    {
+        return (bool) auth()->user()?->can('donations.view');
+    }
+
     protected function getData(): array
     {
         $months = collect(range(11, 0))->map(fn ($i) => now()->subMonths($i));

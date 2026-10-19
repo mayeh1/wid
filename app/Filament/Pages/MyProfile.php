@@ -70,7 +70,11 @@ class MyProfile extends Page implements HasForms
 
     public function save(): void
     {
-        static::teamMember()->update($this->form->getState());
+        $teamMember = static::teamMember();
+
+        $this->form->saveRelationships();
+
+        $teamMember->update($this->form->getState());
 
         Notification::make()
             ->title('Profile updated')

@@ -15,6 +15,11 @@ class CampaignPerformanceTable extends BaseWidget
 
     protected int|string|array $columnSpan = 'full';
 
+    public static function canView(): bool
+    {
+        return (bool) auth()->user()?->can('campaigns.view');
+    }
+
     public function table(Table $table): Table
     {
         return $table

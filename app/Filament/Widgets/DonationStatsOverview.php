@@ -13,6 +13,18 @@ class DonationStatsOverview extends BaseWidget
 {
     protected static ?int $sort = 1;
 
+    public static function canView(): bool
+    {
+        $user = auth()->user();
+
+        return $user && (
+            $user->can('donations.view')
+            || $user->can('campaigns.view')
+            || $user->can('volunteers.view')
+            || $user->can('moderation.manage')
+        );
+    }
+
     protected function getStats(): array
     {
         $raisedThisMonth = Donation::completed()->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year)->sum('amount');

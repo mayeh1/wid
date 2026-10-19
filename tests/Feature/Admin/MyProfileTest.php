@@ -7,6 +7,8 @@ use App\Models\TeamMember;
 use App\Models\User;
 use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -107,5 +109,29 @@ class MyProfileTest extends TestCase
         TeamMember::factory()->create(['user_id' => $user->id, 'category' => 'board_member']);
 
         $this->actingAs($user)->get('/admin/my-profile')->assertOk();
+    }
+
+    public function test_photo_upload_persists_via_save(): void
+    {
+        Storage::fake('public');
+        $this->seed(RolePermissionSeeder::class);
+        $user = User::factory()->create();
+        $user->assignRole('Team Member');
+
+        $teamMember = TeamMember::factory()->create([
+            'user_id' => $user->id,
+            'category' => 'staff',
+        ]);
+
+        Livewire::actingAs($user)
+            ->test(MyProfile::class)
+            ->set('data.photo', [UploadedFile::fake()->image('headshot.jpg')])
+            ->fillForm(['bio' => 'Bio with photo'])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $teamMember->refresh();
+        $this->assertSame('Bio with photo', $teamMember->bio);
+        $this->assertTrue($teamMember->getFirstMedia('photo') !== null, 'Photo should be persisted');
     }
 }

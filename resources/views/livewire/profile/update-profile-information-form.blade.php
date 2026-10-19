@@ -4,12 +4,19 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\Validate;
 use Livewire\Volt\Component;
+use Livewire\WithFileUploads;
 
 new class extends Component
 {
+    use WithFileUploads;
+
     public string $name = '';
     public string $email = '';
+
+    #[Validate('nullable|image|max:2048')]
+    public $photo = null;
 
     /**
      * Mount the component.
@@ -30,15 +37,24 @@ new class extends Component
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
+            'photo' => ['nullable', 'image', 'max:2048'],
         ]);
 
-        $user->fill($validated);
+        $user->fill(['name' => $validated['name'], 'email' => $validated['email']]);
 
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
         $user->save();
+
+        if ($this->photo) {
+            $user->addMedia($this->photo->getRealPath())
+                ->usingFileName($this->photo->getClientOriginalName())
+                ->toMediaCollection('avatar');
+
+            $this->photo = null;
+        }
 
         $this->dispatch('profile-updated', name: $user->name);
     }
@@ -74,6 +90,26 @@ new class extends Component
     </header>
 
     <form wire:submit="updateProfileInformation" class="mt-6 space-y-6">
+        <div>
+            <x-input-label for="photo" :value="__('Profile Photo')" />
+
+            <div class="mt-2 flex items-center gap-4">
+                @if ($photo)
+                    <img src="{{ $photo->temporaryUrl() }}" class="w-16 h-16 rounded-full object-cover">
+                @elseif (auth()->user()->avatarUrl())
+                    <img src="{{ auth()->user()->avatarUrl() }}" class="w-16 h-16 rounded-full object-cover">
+                @else
+                    <div class="w-16 h-16 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 font-semibold">
+                        {{ mb_substr(auth()->user()->name, 0, 1) }}
+                    </div>
+                @endif
+
+                <input type="file" wire:model="photo" id="photo" accept="image/*" class="text-sm text-gray-600 dark:text-gray-400">
+            </div>
+            <div wire:loading wire:target="photo" class="text-xs text-gray-500 mt-1">{{ __('Uploading...') }}</div>
+            <x-input-error class="mt-2" :messages="$errors->get('photo')" />
+        </div>
+
         <div>
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input wire:model="name" id="name" name="name" type="text" class="mt-1 block w-full" required autofocus autocomplete="name" />

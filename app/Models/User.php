@@ -12,12 +12,24 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, HasMedia
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasRoles, HasTwoFactorAuthentication, LogsActivity, Notifiable;
+    use HasFactory, HasRoles, HasTwoFactorAuthentication, InteractsWithMedia, LogsActivity, Notifiable;
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('avatar')->singleFile();
+    }
+
+    public function avatarUrl(): ?string
+    {
+        return $this->getFirstMediaUrl('avatar') ?: null;
+    }
 
     public function getActivitylogOptions(): LogOptions
     {
