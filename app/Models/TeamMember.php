@@ -48,7 +48,13 @@ class TeamMember extends Model implements HasMedia
 
     public function photoUrl(): ?string
     {
-        return $this->getFirstMediaUrl('photo') ?: null;
+        $url = $this->getFirstMediaUrl('photo') ?: null;
+
+        if (! $url && $this->user_id) {
+            $url = $this->user?->avatarUrl();
+        }
+
+        return $url;
     }
 
     /**
