@@ -14,14 +14,47 @@ class Product extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia, LogsActivity;
 
+    public const TYPES = [
+        'digital' => 'Digital Product',
+        'physical' => 'Physical Product',
+        'service' => 'Service',
+    ];
+
     public const CATEGORIES = [
+        // Publications
         'book' => 'Book',
         'magazine' => 'Magazine',
         'consultancy_guide' => 'Consultancy Guide',
         'toolkit' => 'Toolkit',
         'training_course' => 'Training Course',
         'report' => 'Report',
+        // IT & Software Services
+        'software_development' => 'Software Development',
+        'website_development' => 'Website Development',
+        'mobile_app_development' => 'Mobile App Development',
+        'it_consultancy' => 'IT Consultancy',
+        'it_training' => 'IT Training Program',
+        'database_solutions' => 'Database Solutions',
+        'cloud_services' => 'Cloud & Hosting Services',
+        'ui_ux_design' => 'UI/UX Design',
+        'digital_marketing' => 'Digital Marketing',
+        'system_integration' => 'System Integration',
+        // General
         'other' => 'Other',
+    ];
+
+    public const CATEGORY_GROUPS = [
+        'Publications' => [
+            'book', 'magazine', 'consultancy_guide', 'toolkit',
+            'training_course', 'report',
+        ],
+        'IT & Software Services' => [
+            'software_development', 'website_development', 'mobile_app_development',
+            'it_consultancy', 'it_training', 'database_solutions',
+            'cloud_services', 'ui_ux_design', 'digital_marketing',
+            'system_integration',
+        ],
+        'Other' => ['other'],
     ];
 
     protected $fillable = [
@@ -76,13 +109,29 @@ class Product extends Model implements HasMedia
         return $this->type === 'digital';
     }
 
+    public function isService(): bool
+    {
+        return $this->type === 'service';
+    }
+
     public function inStock(): bool
     {
-        if ($this->isDigital()) {
+        if ($this->isDigital() || $this->isService()) {
             return true;
         }
 
         return $this->stock === null || $this->stock > 0;
+    }
+
+    public function categoryGroup(): string
+    {
+        foreach (self::CATEGORY_GROUPS as $group => $cats) {
+            if (in_array($this->category, $cats, true)) {
+                return $group;
+            }
+        }
+
+        return 'Other';
     }
 
     public function formattedPrice(): string

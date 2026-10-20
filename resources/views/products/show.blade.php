@@ -30,7 +30,9 @@
                         <span class="text-xs font-bold uppercase tracking-wide text-gold-600 dark:text-gold-400">
                             {{ \App\Models\Product::CATEGORIES[$product->category] ?? $product->category }}
                         </span>
-                        @if ($product->isDigital())
+                        @if ($product->isService())
+                            <span class="text-xs bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 px-2.5 py-0.5 rounded-full">Service</span>
+                        @elseif ($product->isDigital())
                             <span class="text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-2.5 py-0.5 rounded-full">Digital Download</span>
                         @endif
                     </div>
@@ -42,23 +44,32 @@
                     @endif
 
                     <div class="mt-6 flex items-baseline gap-3">
-                        <span class="text-3xl font-bold text-purple-800 dark:text-gold-400">{{ $product->formattedPrice() }}</span>
-                        @if ($product->hasDiscount())
-                            <span class="text-lg text-gray-400 line-through">${{ number_format($product->compare_price, 2) }}</span>
-                            <span class="text-sm font-semibold text-green-600 dark:text-green-400">
-                                {{ round((($product->compare_price - $product->price) / $product->compare_price) * 100) }}% off
-                            </span>
+                        @if ($product->isService() && $product->price <= 0)
+                            <span class="text-2xl font-bold text-purple-800 dark:text-gold-400">Contact Us for Pricing</span>
+                        @else
+                            <span class="text-3xl font-bold text-purple-800 dark:text-gold-400">{{ $product->formattedPrice() }}</span>
+                            @if ($product->hasDiscount())
+                                <span class="text-lg text-gray-400 line-through">${{ number_format($product->compare_price, 2) }}</span>
+                                <span class="text-sm font-semibold text-green-600 dark:text-green-400">
+                                    {{ round((($product->compare_price - $product->price) / $product->compare_price) * 100) }}% off
+                                </span>
+                            @endif
                         @endif
                     </div>
 
-                    @if (! $product->isDigital() && $product->stock !== null)
+                    @if (! $product->isDigital() && ! $product->isService() && $product->stock !== null)
                         <p class="mt-2 text-sm {{ $product->inStock() ? 'text-green-600 dark:text-green-400' : 'text-red-500' }}">
                             {{ $product->inStock() ? ($product->stock <= 5 ? "Only {$product->stock} left" : 'In stock') : 'Out of stock' }}
                         </p>
                     @endif
 
                     <div class="mt-8">
-                        @if ($product->inStock())
+                        @if ($product->isService() && $product->price <= 0)
+                            <a href="{{ route('contact') }}"
+                               class="inline-flex items-center justify-center w-full rounded-full bg-gold-500 px-8 py-3.5 text-sm font-bold text-purple-950 hover:bg-gold-400 transition-colors">
+                                Request This Service
+                            </a>
+                        @elseif ($product->inStock())
                             <livewire:add-to-cart :product="$product" />
                         @else
                             <button disabled class="w-full rounded-full bg-gray-300 px-8 py-3.5 text-sm font-bold text-gray-500 cursor-not-allowed">
@@ -67,7 +78,14 @@
                         @endif
                     </div>
 
-                    @if ($product->isDigital())
+                    @if ($product->isService())
+                        <div class="mt-4 flex items-center gap-2 text-sm text-gray-500 dark:text-purple-300">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                            </svg>
+                            Professional software service — we'll reach out to discuss your needs
+                        </div>
+                    @elseif ($product->isDigital())
                         <div class="mt-4 flex items-center gap-2 text-sm text-gray-500 dark:text-purple-300">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>

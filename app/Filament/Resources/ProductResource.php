@@ -46,9 +46,10 @@ class ProductResource extends Resource
                             ->options(Product::CATEGORIES)
                             ->required(),
                         Forms\Components\Select::make('type')
-                            ->options(['physical' => 'Physical', 'digital' => 'Digital'])
+                            ->options(Product::TYPES)
                             ->default('digital')
-                            ->required(),
+                            ->required()
+                            ->live(),
                         Forms\Components\TextInput::make('price')
                             ->numeric()
                             ->prefix('$')
@@ -62,7 +63,8 @@ class ProductResource extends Resource
                         Forms\Components\TextInput::make('stock')
                             ->numeric()
                             ->minValue(0)
-                            ->helperText('Leave empty for unlimited (digital products are always unlimited)'),
+                            ->helperText('Leave empty for unlimited (digital products and services are always unlimited)')
+                            ->visible(fn (Forms\Get $get) => $get('type') === 'physical'),
                         Forms\Components\TextInput::make('sort_order')
                             ->numeric()
                             ->default(0),
@@ -115,12 +117,17 @@ class ProductResource extends Resource
                     ->formatStateUsing(fn (string $state) => Product::CATEGORIES[$state] ?? $state),
                 Tables\Columns\TextColumn::make('type')
                     ->badge()
-                    ->color(fn (string $state) => $state === 'digital' ? 'info' : 'warning'),
+                    ->formatStateUsing(fn (string $state) => Product::TYPES[$state] ?? $state)
+                    ->color(fn (string $state) => match ($state) {
+                        'digital' => 'info',
+                        'service' => 'success',
+                        default => 'warning',
+                    }),
                 Tables\Columns\TextColumn::make('price')
                     ->money('usd')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('stock')
-                    ->formatStateUsing(fn (?int $state, Product $record) => $record->isDigital() ? '∞' : ($state ?? '∞')),
+                    ->formatStateUsing(fn (?int $state, Product $record) => ($record->isDigital() || $record->isService()) ? '∞' : ($state ?? '∞')),
                 Tables\Columns\IconColumn::make('is_published')
                     ->boolean()
                     ->label('Published'),
@@ -136,7 +143,7 @@ class ProductResource extends Resource
                 Tables\Filters\SelectFilter::make('category')
                     ->options(Product::CATEGORIES),
                 Tables\Filters\SelectFilter::make('type')
-                    ->options(['physical' => 'Physical', 'digital' => 'Digital']),
+                    ->options(Product::TYPES),
                 Tables\Filters\TernaryFilter::make('is_published')
                     ->label('Published'),
             ])

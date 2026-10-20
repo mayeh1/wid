@@ -13,9 +13,13 @@ class ProductController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        $categories = $products->pluck('category')->unique()->values();
+        $activeCategories = $products->pluck('category')->unique()->values();
 
-        return view('products.index', compact('products', 'categories'));
+        $sidebarGroups = collect(Product::CATEGORY_GROUPS)
+            ->map(fn ($cats) => collect($cats)->filter(fn ($c) => $activeCategories->contains($c))->values())
+            ->filter(fn ($cats) => $cats->isNotEmpty());
+
+        return view('products.index', compact('products', 'activeCategories', 'sidebarGroups'));
     }
 
     public function show(string $slug)
